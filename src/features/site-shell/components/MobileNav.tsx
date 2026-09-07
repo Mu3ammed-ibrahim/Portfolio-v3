@@ -2,7 +2,7 @@
 
 import { useLenis } from "lenis/react";
 import { MenuIcon } from "lucide-react";
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NavLinks } from "@/features/site-shell/components/NavLinks";
@@ -17,14 +17,34 @@ type MobileNavProps = {
 
 export function MobileNav({ items, dir, labels }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+  const pendingTarget = useRef<SectionId | null>(null);
   const lenis = useLenis();
 
   const navigate = (id: SectionId, event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+    pendingTarget.current = id;
     setOpen(false);
-    // The drawer holds a scroll lock while it closes; scroll once it has let go.
-    window.setTimeout(() => lenis?.scrollTo(`#${id}`), 250);
   };
+
+  // The drawer locks page scroll until its panel unmounts after the exit animation,
+  // so wait for the panel to be gone before scrolling to the chosen section.
+  useEffect(() => {
+    if (open || !pendingTarget.current) return;
+    let frame = 0;
+    const tick = () => {
+      if (document.querySelector('[data-slot="sheet-content"]')) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+      const id = pendingTarget.current;
+      pendingTarget.current = null;
+      if (!id) return;
+      if (lenis) lenis.scrollTo(`#${id}`);
+      else document.getElementById(id)?.scrollIntoView();
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [open, lenis]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

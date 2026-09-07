@@ -15,9 +15,10 @@ export function Hero({ t }: HeroProps) {
         </p>
         <h1 className="disp mb-9 text-[clamp(64px,9.4vw,150px)] leading-[.88] rtl:text-[clamp(44px,5.4vw,88px)]">
           {t.hero.lines.map((line) => (
+            // Each line is its own clip box so the intro can slide the words up out of it.
             <span
               key={line}
-              className="inline-block overflow-hidden pb-[.08em] -mb-[.08em] align-bottom rtl:pb-[.22em] rtl:-mb-[.22em]"
+              className="block overflow-hidden pb-[.08em] -mb-[.08em] rtl:pb-[.22em] rtl:-mb-[.22em]"
             >
               <span data-hero-line className="block">
                 {line}

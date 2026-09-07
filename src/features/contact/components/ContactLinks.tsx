@@ -11,7 +11,7 @@ export function ContactLinks({ location }: ContactLinksProps) {
       {/* Red half-disc bleeding past the container edge */}
       <div
         aria-hidden
-        className="absolute -inset-y-[140px] -start-10 -end-[50vw] rounded-s-[50%] bg-brand"
+        className="absolute -inset-y-4 -start-6 -end-[50vw] rounded-s-[50%] bg-brand lg:-inset-y-[140px] lg:-start-10"
       />
       <ul className="relative flex flex-col gap-7 py-10 ps-8 text-sm sm:ps-14">
         <li>

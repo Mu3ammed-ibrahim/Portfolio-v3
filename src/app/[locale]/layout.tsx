@@ -32,6 +32,9 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+// Only the listed locales exist; anything else falls through to the global 404 without rendering.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const { locale } = await params;
   const t = getDictionary(isLocale(locale) ? locale : defaultLocale);

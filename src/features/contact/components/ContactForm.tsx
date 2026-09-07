@@ -51,7 +51,8 @@ function InquiryForm({ t, arrow, onReset }: InquiryFormProps) {
     hasError && state.invalid.includes(field) ? t.errors[field] : undefined;
 
   return (
-    <form action={action} noValidate>
+    // Keyed by attempt so fields remount with the returned values instead of mutating their defaults.
+    <form key={state.attempt} action={action} noValidate>
       <p className="mb-7 text-[15px] leading-[1.75] text-ink">{t.intro}</p>
       <div className="mb-7 flex flex-col gap-3.5">
         <ContactField id="name" label={t.fields.name} error={errorFor("name")}>
@@ -99,7 +100,6 @@ function InquiryForm({ t, arrow, onReset }: InquiryFormProps) {
         </p>
       ) : null}
       <CtaButton
-        key={state.attempt}
         type="submit"
         disabled={pending}
         label={pending ? t.sending : t.submit}
