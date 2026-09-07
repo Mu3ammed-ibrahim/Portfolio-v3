@@ -129,13 +129,15 @@
   body {
     @apply bg-ground text-ink antialiased;
   }
-  :focus-visible {
-    outline: 2px solid var(--brand);
-    outline-offset: 2px;
-  }
-  ::selection {
-    background: color-mix(in srgb, var(--brand) 30%, transparent);
-  }
+}
+
+/* Unlayered on purpose: shadcn's base layer sets its own focus outline and would win inside @layer */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+::selection {
+  background: color-mix(in srgb, var(--brand) 30%, transparent);
 }
 
 /* Page container: 1360px column, 48px gutters on desktop */
