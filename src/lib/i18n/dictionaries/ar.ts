@@ -36,6 +36,7 @@ export const ar: Dictionary = {
       { name: "Eshop", kind: "متجر إلكتروني" },
       { name: "نبض الابتكار", kind: "موقع تجربة ابتكار" },
       { name: "Trackify", kind: "تطبيق متابعة مالية" },
+      { name: "كوبون VIP", kind: "موقع منصة كوبونات" },
     ],
   },
   services: {

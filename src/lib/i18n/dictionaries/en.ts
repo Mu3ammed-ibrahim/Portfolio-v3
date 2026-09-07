@@ -36,6 +36,7 @@ export const en = {
       { name: "Eshop", kind: "E-commerce website" },
       { name: "نبض الابتكار", kind: "Innovation experience website" },
       { name: "Trackify", kind: "Finance tracker app" },
+      { name: "Kobon VIP", kind: "Coupon platform website" },
     ],
   },
   services: {

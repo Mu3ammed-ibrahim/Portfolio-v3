@@ -10,4 +10,5 @@ export const projects: Project[] = [
   { slug: "eshop", image: "/work/eshop.png", tags: ["React", "Redux Toolkit", "Node"], href: site.github },
   { slug: "nabd-alibtikar", image: "/work/nabd-alibtikar.png", tags: ["Next.js", "Tailwind", "Bilingual"], href: site.github },
   { slug: "trackify", image: "/work/trackify.png", tags: ["React", "Recharts", "Node"], href: site.github },
+  { slug: "kobonvip", image: "/work/kobonvip.png", tags: ["Next.js", "Tailwind", "RTL"], href: site.github },
 ];

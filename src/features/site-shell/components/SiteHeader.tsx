@@ -18,7 +18,7 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
       <header className="sticky top-0 z-20 bg-ground/85 backdrop-blur-[10px]">
         <nav className="wrap flex h-16 items-center justify-between gap-6">
           <a href="#top" className="flex items-center gap-2.5" aria-label={t.nav.home}>
-            <Image src="/logo.png" alt="" width={34} height={34} priority className="h-[34px] w-auto" />
+            <Image src="/logo.png" alt="" width={51} height={34} priority className="h-[34px] w-auto" />
             <span className="disp text-lg tracking-[.06em]" aria-hidden>
               M<span className="text-brand">·</span>O
             </span>
