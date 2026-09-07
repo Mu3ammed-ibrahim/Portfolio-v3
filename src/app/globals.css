@@ -1,26 +1,208 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * MO Studio is dark-only by design. The page tokens come straight from the
+ * design's :root override; shadcn's semantic tokens are mapped onto the same
+ * values so its primitives match without a .dark class.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  --ground: #0f0e0e;
+  --surface: #181616;
+  --ink: #f3f2f2;
+  --brand: #ec3013;
+  --brand-soft: #ff9783;
+  --divider: color-mix(in srgb, var(--ink) 16%, transparent);
+  --ink-muted: color-mix(in srgb, var(--ink) 62%, transparent);
+
+  /* next/font injects --font-archivo / --font-kufi / --font-plex-arabic on <html> */
+  --font-heading: var(--font-archivo), system-ui, sans-serif;
+  --font-body: var(--font-archivo), system-ui, sans-serif;
+
+  --background: var(--ground);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--brand);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--surface);
+  --accent-foreground: var(--ink);
+  --destructive: var(--brand-soft);
+  --border: var(--divider);
+  --input: var(--divider);
+  --ring: var(--brand);
+  --radius: 0px;
+}
+
+/* Arabic gets its own pairing; Latin digits and brand marks opt back into Archivo via font-latin */
+[dir="rtl"] {
+  --font-heading: var(--font-kufi), var(--font-archivo), sans-serif;
+  --font-body: var(--font-plex-arabic), var(--font-archivo), sans-serif;
 }
 
 @theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-divider: var(--divider);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-latin: var(--font-archivo), system-ui, sans-serif;
+  --font-arabic: var(--font-plex-arabic), var(--font-archivo), sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* The design has no rounded corner anywhere */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+
+  --ease-out-expo: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-pulse-dot: pulse-dot 2s infinite;
+  --animate-shake: shake 0.4s;
+  --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-rotate-18: rotate 18s linear infinite;
+  --animate-rotate-20: rotate 20s linear infinite;
+
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(236 48 19 / 0.6); }
+    70% { box-shadow: 0 0 0 8px rgb(236 48 19 / 0); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: none; }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-ground text-ink antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--brand) 30%, transparent);
+  }
+}
+
+/* Page container: 1360px column, 48px gutters on desktop */
+@utility wrap {
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  @media (width >= 48rem) {
+    padding-inline: 48px;
+  }
+}
+
+/* Display type: condensed Archivo, set tight and upright */
+@utility disp {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 66%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+}
+
+/* Small tracked labels */
+@utility meta {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Section label with the 8px accent square */
+@utility rail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  &::before {
+    content: "";
+    display: inline-block;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    background: var(--brand);
+  }
+}
+
+/* Arabic display type has no condensed axis and no case; it needs more leading */
+[dir="rtl"] .disp {
+  font-stretch: 100%;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.25;
+}
+[dir="rtl"] .rail {
+  font-stretch: 100%;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+[dir="rtl"] .meta {
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
