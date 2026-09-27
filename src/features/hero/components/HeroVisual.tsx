@@ -11,14 +11,14 @@ export function HeroVisual({ portraitAlt, disciplines }: HeroVisualProps) {
           aria-hidden
           className="absolute top-[6%] -end-[6%] aspect-square w-[min(60vw,470px)] rounded-full bg-brand lg:w-[min(34vw,470px)]"
         />
-        <div data-hero-photo className="absolute top-0 start-[6%] h-full w-[78%] overflow-hidden">
+        <div data-hero-photo className="absolute top-0  h-[60px] w-[58%] overflow-hidden">
           <Image
             src="/hero-portrait.webp"
             alt={portraitAlt}
             fill
             priority
             sizes="(min-width: 1024px) 40vw, 80vw"
-            className="object-cover object-[60%_center]"
+            className="object-cover "
           />
         </div>
         <div aria-hidden className="absolute top-[10%] end-0 hidden h-[44%] w-px bg-divider lg:block">
