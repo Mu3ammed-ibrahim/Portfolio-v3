@@ -21,7 +21,7 @@ export function LangToggle({ locale, switchLabel }: LangToggleProps) {
   };
 
   return (
-    <div className="flex border border-divider" role="group" aria-label={switchLabel}>
+    <div className="inline-flex border border-divider" role="group" aria-label={switchLabel}>
       {locales.map((code) => {
         const isOn = code === locale;
         return (
@@ -35,7 +35,7 @@ export function LangToggle({ locale, switchLabel }: LangToggleProps) {
             className={cn(
               "px-2.5 py-1.5 text-[11px] leading-none font-bold tracking-[.1em] text-ink-muted transition-colors duration-250 hover:text-ink",
               code === "ar" && "font-arabic",
-              isOn && "bg-brand text-white hover:text-white",
+              isOn && "bg-brand text-ground hover:text-ground",
             )}
           >
             {labels[code]}

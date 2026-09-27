@@ -120,7 +120,7 @@ export const en = {
     langTitle: "Language",
     backTop: "Back to top",
   },
-  arrows: { forward: "→", diag: "↗", up: "↑" },
+  arrows: { forward: "→" },
 };
 
 export type Dictionary = typeof en;

@@ -117,5 +117,5 @@ export const ar: Dictionary = {
     langTitle: "اللغة",
     backTop: "العودة للأعلى",
   },
-  arrows: { forward: "←", diag: "↖", up: "↑" },
+  arrows: { forward: "←" },
 };

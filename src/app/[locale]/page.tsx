@@ -28,7 +28,7 @@ export default async function PortfolioPage({ params }: PageProps<"/[locale]">) 
         <StatsSection t={t} />
         <ContactSection t={t} />
       </main>
-      <SiteFooter t={t} />
+      <SiteFooter t={t} locale={locale} />
     </>
   );
 }

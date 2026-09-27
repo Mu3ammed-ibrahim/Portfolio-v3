@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuIcon } from "lucide-react";
+import { ListIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -49,7 +49,7 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
           <Button variant="ghost" size="icon" className="md:hidden" aria-label={labels.open} />
         }
       >
-        <MenuIcon className="size-5" />
+        <ListIcon aria-hidden className="size-5" />
       </SheetTrigger>
       <SheetContent
         side={dir === "rtl" ? "left" : "right"}

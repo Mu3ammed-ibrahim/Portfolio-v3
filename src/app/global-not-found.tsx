@@ -12,7 +12,7 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "Page not found — MO Studio",
+  title: "Page not found | MO Studio",
   description: "That page does not exist.",
 };
 

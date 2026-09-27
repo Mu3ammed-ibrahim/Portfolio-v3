@@ -7,6 +7,6 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/mohammed-almutassim-gallab-39a11098/",
 } as const;
 
-export const sectionIds = ["work", "services", "about", "stack", "contact"] as const;
+export const sectionIds = ["about", "services", "stack", "work", "contact"] as const;
 
 export type SectionId = (typeof sectionIds)[number];
