@@ -1,5 +1,4 @@
 import { RevealGroup } from "@/components/RevealGroup";
-import { SpinningBadge } from "@/features/stats/components/SpinningBadge";
 import { StatCounter } from "@/features/stats/components/StatCounter";
 import { stats } from "@/features/stats/lib/stats";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -9,7 +8,7 @@ type StatsSectionProps = { t: Dictionary };
 export function StatsSection({ t }: StatsSectionProps) {
   return (
     <section className="relative z-[1] border-t border-divider">
-      <RevealGroup className="wrap grid grid-cols-2 items-center gap-x-6 gap-y-10 py-12 lg:grid-cols-[repeat(4,1fr)_180px] lg:gap-0">
+      <RevealGroup className="wrap grid grid-cols-2 items-center gap-x-6 gap-y-10 py-12 lg:grid-cols-4 lg:gap-0">
         {stats.map((stat, index) => (
           <div
             key={stat.suffix + stat.target}
@@ -24,7 +23,6 @@ export function StatsSection({ t }: StatsSectionProps) {
             </p>
           </div>
         ))}
-        <SpinningBadge />
       </RevealGroup>
     </section>
   );

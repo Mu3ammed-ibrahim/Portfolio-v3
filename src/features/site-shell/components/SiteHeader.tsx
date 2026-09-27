@@ -26,12 +26,6 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
           <div className="flex items-center gap-4 md:gap-[26px]">
             <NavLinks items={items} className="hidden md:flex" />
             <LangToggle locale={locale} switchLabel={t.nav.switchLang} />
-            <span
-              role="img"
-              aria-label={t.nav.openBadge}
-              title={t.nav.openBadge}
-              className="inline-block size-[9px] animate-pulse-dot rounded-full bg-brand"
-            />
             <MobileNav
               items={items}
               dir={dirOf(locale)}
