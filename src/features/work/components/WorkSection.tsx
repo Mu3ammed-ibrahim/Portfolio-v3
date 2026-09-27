@@ -2,11 +2,12 @@ import { RevealGroup } from "@/components/RevealGroup";
 import { MoreOnGithub } from "@/features/work/components/MoreOnGithub";
 import { ProjectCard } from "@/features/work/components/ProjectCard";
 import { projects } from "@/features/work/lib/projects";
+import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
-type WorkSectionProps = { t: Dictionary };
+type WorkSectionProps = { t: Dictionary; locale: Locale };
 
-export function WorkSection({ t }: WorkSectionProps) {
+export function WorkSection({ t, locale }: WorkSectionProps) {
   return (
     <section id="work" className="relative z-[1] border-t border-divider">
       <RevealGroup className="wrap pt-14 pb-16">
@@ -18,15 +19,15 @@ export function WorkSection({ t }: WorkSectionProps) {
             <ProjectCard
               key={project.slug}
               project={project}
-              name={t.work.projects[index].name}
-              kind={t.work.projects[index].kind}
-              num={`0${index + 1}`}
+              kind={t.work.projects[project.slug]}
+              repoLabel={t.work.repo}
               arrow={t.arrows.diag}
+              locale={locale}
               delay={index * 0.08}
             />
           ))}
+          <MoreOnGithub lines={t.work.more} delay={projects.length * 0.08} />
         </div>
-        <MoreOnGithub lines={t.work.more} />
       </RevealGroup>
     </section>
   );

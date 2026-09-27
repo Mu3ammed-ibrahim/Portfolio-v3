@@ -191,12 +191,23 @@
   }
 }
 
-/* Arabic display type has no condensed axis and no case; it needs more leading */
-[dir="rtl"] .disp {
+/* Arabic display type has no condensed axis and no case; it needs more leading.
+   Scoped by :lang, not [dir], so an Arabic project name is set correctly on the English page too.
+   Same (0,2,0) specificity as the [dir="rtl"] rule it replaces, and it inherits from <html lang>,
+   so whole-page Arabic behaves exactly as before. */
+.disp:lang(ar) {
+  font-family: var(--font-kufi), var(--font-archivo), sans-serif;
   font-stretch: 100%;
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.25;
+}
+/* --font-heading is redefined on [dir="rtl"] and custom properties inherit, so a Latin name inside
+   the Arabic page would otherwise resolve to Kufi. font-family is the only property that needs
+   pinning: these rules are unlayered and would beat the leading/width utilities the other sections
+   rely on. On /en it resolves to the same stack .disp already had. */
+.disp:lang(en) {
+  font-family: var(--font-latin);
 }
 [dir="rtl"] .rail {
   font-stretch: 100%;

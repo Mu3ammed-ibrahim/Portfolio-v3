@@ -29,38 +29,40 @@ export const en = {
   work: {
     rail: "My work",
     more: ["More projects", "on GitHub"],
-    projects: [
-      { name: "Dr.Photo", kind: "Medical visual brand website" },
-      { name: "ظل الشرق", kind: "Restaurant website" },
-      { name: "Riwaq", kind: "Café website" },
-      { name: "Eshop", kind: "E-commerce website" },
-      { name: "نبض الابتكار", kind: "Innovation experience website" },
-      { name: "Trackify", kind: "Finance tracker app" },
-      { name: "Kobon VIP", kind: "Coupon platform website" },
-    ],
+    repo: "Source",
+    // Keyed by slug, not ordered: project names live in projects.ts because they do not translate.
+    projects: {
+      drphoto: "Medical visual brand website",
+      "dhil-alsharq": "Restaurant website",
+      riwaq: "Café website",
+      eshop: "E-commerce website",
+      "nabd-alibtikar": "Innovation experience website",
+      trackify: "Finance tracker app",
+      kobonvip: "Coupon platform website",
+    },
   },
   services: {
     rail: "What I do",
     items: [
       {
         title: "UI / UX design",
-        body: "Screens and flows designed before code — wireframes, layout and a visual system.",
+        body: "I design screens and user flows before writing code, so your product feels clear from the first release",
       },
       {
         title: "Web applications",
-        body: "React / Next.js apps with routing, state, auth and analytics wired end to end.",
+        body: "I build fast, well-structured apps with React and Next.js, including authentication, state management, and analytics",
       },
       {
-        title: "APIs & backends",
-        body: "Typed REST APIs on Node and Express with Prisma and JWT authentication.",
+        title: "Backend services",
+        body: "I develop secure REST APIs with Node, Express, Prisma, and PostgreSQL, built for the product you'll have in two years, not just today",
       },
       {
         title: "Dashboards & admin",
-        body: "Data-dense CRUD tools, charts and role-based access your team runs on.",
+        body: "I turn your data into clear admin dashboards with charts, and give each user only the access they need",
       },
       {
-        title: "Database design",
-        body: "PostgreSQL schemas and migrations planned for the product you will have in two years.",
+        title: "Business systems",
+        body: "I create custom CMS and CRM systems around how you work, so you manage content and customers from one place",
       },
     ],
   },
@@ -74,10 +76,10 @@ export const en = {
   },
   about: {
     rail: "My approach",
-    heading: ["Good code", "is clear thinking", "made"],
+    heading: ["What you see on screen starts with what you don't"],
     highlight: "visible.",
-    p1: "I'm Mohammed Almutassim Gallab. Through MO Studio I take your idea all the way to a live product — the screens your customers use, the logic behind them, and the database that keeps everything safe.",
-    p2: "One person on both sides means nothing gets lost between designer and developer: fewer meetings, faster launches, and a product that keeps growing after handover.",
+    p1: "I'm Mohammed Almutassim Gallab. Through MO Studio, I take your idea to a product that actually works: the screens your customers use, the logic behind them, and the database that keeps everything safe.",
+    p2: "When one person is both designer and developer, nothing gets lost between the two: fewer meetings, faster launches, and a product that keeps growing with you after handoff",
     photoAlt: "Mohammed Almutassim at work",
   },
   stack: {
