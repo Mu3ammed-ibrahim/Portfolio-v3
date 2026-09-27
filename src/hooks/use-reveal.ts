@@ -1,5 +1,7 @@
-import { useRef } from "react";
-import { EASE, MOTION_OK, gsap, useGSAP } from "@/lib/gsap";
+import { animate, inView } from "motion";
+import { useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
+import { EASE_OUT, IN_VIEW_MARGIN } from "@/lib/motion";
 
 /**
  * Scroll reveal for every `[data-reveal]` descendant of the returned scope.
@@ -8,28 +10,29 @@ import { EASE, MOTION_OK, gsap, useGSAP } from "@/lib/gsap";
  */
 export function useReveal<T extends HTMLElement>() {
   const scope = useRef<T>(null);
+  const reduceMotion = useReducedMotion();
 
-  useGSAP(
-    () => {
-      const items = scope.current?.querySelectorAll<HTMLElement>("[data-reveal]");
-      if (!items?.length) return;
+  useEffect(() => {
+    const items = scope.current?.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (reduceMotion || !items?.length) return;
 
-      const mm = gsap.matchMedia();
-      mm.add(MOTION_OK, () => {
-        items.forEach((item) => {
-          gsap.from(item, {
-            y: 28,
-            autoAlpha: 0,
-            duration: 0.9,
-            ease: EASE,
-            delay: Number(item.dataset.reveal) || 0,
-            scrollTrigger: { trigger: item, start: "top 88%", once: true },
-          });
-        });
-      });
-    },
-    { scope },
-  );
+    const stops = Array.from(items, (item) => {
+      animate(item, { opacity: 0, y: 28 }, { duration: 0 });
+      return inView(
+        item,
+        () => {
+          animate(
+            item,
+            { opacity: 1, y: 0 },
+            { duration: 0.9, ease: EASE_OUT, delay: Number(item.dataset.reveal) || 0 },
+          );
+        },
+        { margin: IN_VIEW_MARGIN },
+      );
+    });
+
+    return () => stops.forEach((stop) => stop());
+  }, [reduceMotion]);
 
   return scope;
 }

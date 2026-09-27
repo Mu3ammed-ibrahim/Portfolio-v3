@@ -1,24 +1,17 @@
 "use client";
 
-import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { motion, useScroll, useSpring } from "motion/react";
 
 export function ScrollProgress() {
-  const bar = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    ScrollTrigger.create({
-      start: 0,
-      end: "max",
-      onUpdate: (self) => gsap.set(bar.current, { scaleX: self.progress }),
-    });
-  });
+  const { scrollYProgress } = useScroll();
+  // A light spring smooths wheel steps without visibly lagging the scrollbar.
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
 
   return (
-    <div
-      ref={bar}
+    <motion.div
       aria-hidden
-      className="fixed inset-x-0 top-0 z-30 h-0.5 origin-left scale-x-0 bg-brand rtl:origin-right"
+      style={{ scaleX }}
+      className="fixed inset-x-0 top-0 z-30 h-0.5 origin-left bg-brand rtl:origin-right"
     />
   );
 }

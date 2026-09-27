@@ -1,6 +1,5 @@
 "use client";
 
-import { useLenis } from "lenis/react";
 import { MenuIcon } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,6 @@ type MobileNavProps = {
 export function MobileNav({ items, dir, labels }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const pendingTarget = useRef<SectionId | null>(null);
-  const lenis = useLenis();
 
   const navigate = (id: SectionId, event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -38,13 +36,11 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
       }
       const id = pendingTarget.current;
       pendingTarget.current = null;
-      if (!id) return;
-      if (lenis) lenis.scrollTo(`#${id}`);
-      else document.getElementById(id)?.scrollIntoView();
+      if (id) document.getElementById(id)?.scrollIntoView();
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [open, lenis]);
+  }, [open]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

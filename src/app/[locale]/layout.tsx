@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans_Arabic, Noto_Kufi_Arabic } from "next/font/google";
-import { SmoothScroll } from "@/components/SmoothScroll";
 import { defaultLocale, dirOf, isLocale, locales } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import "@/app/globals.css";
@@ -54,10 +53,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={dirOf(locale)}
+      // Lets Next suspend the CSS smooth scroll during route changes (the EN/AR toggle).
+      data-scroll-behavior="smooth"
       className={`${archivo.variable} ${kufi.variable} ${plexArabic.variable}`}
     >
       <body className="min-h-dvh overflow-x-clip">
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   );

@@ -125,6 +125,13 @@
   }
   html {
     @apply font-sans;
+    /* Anchor targets land below the 64px sticky header */
+    scroll-padding-top: 72px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
     @apply bg-ground text-ink antialiased;
