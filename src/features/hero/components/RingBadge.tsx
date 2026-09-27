@@ -14,7 +14,8 @@ export function RingBadge({ text, href }: RingBadgeProps) {
         <defs>
           <path id="ring-path" d="M70,70 m-56,0 a56,56 0 1,1 112,0 a56,56 0 1,1 -112,0" />
         </defs>
-        <text className="fill-ink text-[10.5px] font-bold uppercase">
+        {/* Under an inherited RTL direction the text anchors at the path's end and runs off it. */}
+        <text direction="ltr" className="fill-ink text-[10.5px] font-bold uppercase">
           {/* textLength spreads any locale's string evenly around the full 2πr circle */}
           <textPath href="#ring-path" textLength={351} lengthAdjust="spacing">
             {text}

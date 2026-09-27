@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { MotionConfig, motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { EASE_OUT } from "@/lib/motion";
 
@@ -22,18 +22,18 @@ const line: Variants = {
 
 type HeroIntroProps = { children: ReactNode; className?: string };
 
-/** Plays the hero entrance once, in reading order; renders the final state under reduced motion. */
+/**
+ * Plays the hero entrance once, in reading order. `initial` must not branch on the reduced-motion
+ * preference: the server cannot see it, so the first render would differ and break hydration.
+ * MotionConfig applies the preference after hydration instead, dropping the slides and keeping the fades.
+ */
 export function HeroIntro({ children, className }: HeroIntroProps) {
-  const reduceMotion = useReducedMotion();
   return (
-    <motion.div
-      className={className}
-      variants={container}
-      initial={reduceMotion ? false : "hidden"}
-      animate="shown"
-    >
-      {children}
-    </motion.div>
+    <MotionConfig reducedMotion="user">
+      <motion.div className={className} variants={container} initial="hidden" animate="shown">
+        {children}
+      </motion.div>
+    </MotionConfig>
   );
 }
 

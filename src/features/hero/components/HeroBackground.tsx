@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 
 type HeroBackgroundProps = { alt: string };
@@ -10,16 +10,16 @@ type HeroBackgroundProps = { alt: string };
  * slower than the page as the hero scrolls away, which gives the cut edge some depth.
  */
 export function HeroBackground({ alt }: HeroBackgroundProps) {
-  const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 900], ["0%", "12%"]);
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* Reduced motion is handled in CSS, not by branching the render, so SSR and client markup match. */}
       <motion.div
-        className="absolute inset-0"
-        style={reduceMotion ? undefined : { y }}
-        initial={reduceMotion ? false : { scale: 1.06 }}
+        className="absolute inset-0 motion-reduce:transform-none!"
+        style={{ y }}
+        initial={{ scale: 1.06 }}
         animate={{ scale: 1 }}
         transition={{ duration: 1.8, ease: [0.2, 0.7, 0.2, 1] }}
       >
