@@ -19,6 +19,10 @@
   --brand-soft: #ff9783;
   --divider: color-mix(in srgb, var(--ink) 16%, transparent);
   --ink-muted: color-mix(in srgb, var(--ink) 62%, transparent);
+  /* Raised band tone: the reference's light bands, kept inside the dark theme */
+  --lift: color-mix(in srgb, var(--ink) 6%, var(--ground));
+  /* Rise of every diagonal band edge */
+  --cut: clamp(28px, 5vw, 84px);
 
   /* next/font injects --font-archivo / --font-kufi / --font-plex-arabic on <html> */
   --font-heading: var(--font-archivo), system-ui, sans-serif;
@@ -54,6 +58,7 @@
 @theme inline {
   --color-ground: var(--ground);
   --color-surface: var(--surface);
+  --color-lift: var(--lift);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-brand: var(--brand);
@@ -225,4 +230,41 @@
 [dir="rtl"] .meta {
   letter-spacing: 0.02em;
   text-transform: none;
+}
+
+/*
+ * Diagonal band edges. clip-path has no logical form, so each shape is mirrored under RTL
+ * to keep the high side of the slope at the reading end.
+ */
+@utility cut-both {
+  clip-path: polygon(0 var(--cut), 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% var(--cut), 100% 100%, 0 calc(100% - var(--cut)));
+  }
+}
+@utility cut-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - var(--cut)));
+  }
+}
+
+/* Right-angle wedge whose square corner sits at the bottom inline-start */
+@utility wedge-start {
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+}
+@utility wedge-end {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+  }
+}
+
+/* Dot-grid texture for decorative layers */
+@utility dots {
+  background-image: radial-gradient(var(--divider) 1.2px, transparent 1.6px);
+  background-size: 16px 16px;
 }
