@@ -16,10 +16,11 @@ const ICONS = [
     <rect x="6" y="22" width="12" height="12" />
     <rect x="22" y="22" width="12" height="12" />
   </g>,
-  <g key="database">
-    <ellipse cx="20" cy="10" rx="13" ry="4.5" />
-    <path d="M7 10v20c0 2.5 5.8 4.5 13 4.5S33 32.5 33 30V10M7 20c0 2.5 5.8 4.5 13 4.5S33 22.5 33 20" />
-  </g>,
+  <g key="systems">
+  <path d="M20 6L34 13.5L20 21L6 13.5Z" />
+  <path d="M6 20L20 27.5L34 20" />
+  <path d="M6 26.5L20 34L34 26.5" />
+</g>,
 ];
 
 type ServiceIconProps = { index: number; className?: string };
