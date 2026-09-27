@@ -28,14 +28,13 @@ export function WorkSection({ t, locale }: WorkSectionProps) {
           }
           labels={{ prev: t.work.prev, next: t.work.next }}
         >
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <li key={project.slug} className="snap-start">
               <ProjectCard
                 project={project}
                 kind={t.work.projects[project.slug]}
                 repoLabel={t.work.repo}
                 locale={locale}
-                delay={Math.min(index, 3) * 0.08}
               />
             </li>
           ))}

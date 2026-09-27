@@ -8,19 +8,17 @@ type ProjectCardProps = {
   kind: string;
   repoLabel: string;
   locale: Locale;
-  delay: number;
 };
 
 /**
  * The card has two destinations, so it cannot be one <a> around everything. The name is the live
  * link and stretches over the whole card via ::after; the repo link is lifted above that overlay.
  */
-export function ProjectCard({ project, kind, repoLabel, locale, delay }: ProjectCardProps) {
+export function ProjectCard({ project, kind, repoLabel, locale }: ProjectCardProps) {
   const [primary, secondary] = nameLines(project.name, locale);
 
   return (
     <article
-      data-reveal={delay}
       className="group/card relative flex h-full flex-col border border-divider bg-surface text-ink transition-colors duration-500 ease-out-expo hover:border-brand/60 focus-within:border-brand"
     >
       <div className="relative aspect-[4/5] overflow-hidden">
