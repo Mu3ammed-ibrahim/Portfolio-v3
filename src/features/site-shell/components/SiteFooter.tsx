@@ -7,7 +7,7 @@ export function SiteFooter({ t }: SiteFooterProps) {
     <footer className="relative z-[1] border-t border-divider bg-ground">
       <div className="wrap meta grid grid-cols-1 gap-3 py-[22px] text-[10px] text-ink-muted md:grid-cols-[1fr_auto_1fr] md:items-center">
         <span>{t.footer.copyright}</span>
-        <span>{t.footer.mid}</span>
+        <span>{t.footer.blurb}</span>
         <a
           href="#top"
           className="flex w-fit items-center gap-2.5 text-inherit transition-colors hover:text-brand md:justify-self-end"

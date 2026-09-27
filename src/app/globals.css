@@ -268,3 +268,11 @@
   background-image: radial-gradient(var(--divider) 1.2px, transparent 1.6px);
   background-size: 16px 16px;
 }
+
+/* Panel whose inline-end edge leans in by a fixed amount, whatever the panel's width */
+@utility slant-end {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 96px) 100%, 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 96px 100%);
+  }
+}

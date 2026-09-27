@@ -21,11 +21,11 @@ export default async function PortfolioPage({ params }: PageProps<"/[locale]">) 
       <SiteHeader t={t} locale={locale} />
       <main>
         <Hero t={t} />
-        <StatsSection t={t} />
-        <StackSection t={t} />
-        <ServicesSection t={t} />
-        <WorkSection t={t} locale={locale} />
         <AboutSection t={t} />
+        <ServicesSection t={t} />
+        <StackSection t={t} />
+        <WorkSection t={t} locale={locale} />
+        <StatsSection t={t} />
         <ContactSection t={t} />
       </main>
       <SiteFooter t={t} />

@@ -2,7 +2,7 @@
 // No functions here: dictionaries cross the Server → Client boundary as props.
 export const en = {
   meta: {
-    title: "MO Studio — Mohammed Almutassim, full-stack developer",
+    title: "MO Studio | Mohammed Almutassim, full-stack developer",
     description:
       "Design, frontend, backend and database from one developer in Jeddah. Web apps, APIs and dashboards shipped end to end.",
   },
@@ -29,8 +29,11 @@ export const en = {
     portraitAlt: "Mohammed Almutassim",
   },
   work: {
-    rail: "My work",
-    more: ["More projects", "on GitHub"],
+    rail: "Featured projects",
+    heading: "My work",
+    viewAll: "View all on GitHub",
+    prev: "Previous projects",
+    next: "Next projects",
     repo: "Source",
     // Keyed by slug, not ordered: project names live in projects.ts because they do not translate.
     projects: {
@@ -44,7 +47,7 @@ export const en = {
     },
   },
   services: {
-    rail: "What I do",
+    heading: "What I do",
     items: [
       {
         title: "UI / UX design",
@@ -69,6 +72,7 @@ export const en = {
     ],
   },
   stats: {
+    heading: "By the numbers",
     labels: [
       ["Years building", "for the web"],
       ["Products &", "features shipped"],
@@ -77,20 +81,19 @@ export const en = {
     ],
   },
   about: {
-    rail: "My approach",
-    heading: ["What you see on screen starts with what you don't"],
-    highlight: "visible.",
+    // The highlight closes the heading in the brand colour.
+    heading: "What you see on screen starts with what you",
+    highlight: "don't",
     p1: "I'm Mohammed Almutassim Gallab. Through MO Studio, I take your idea to a product that actually works: the screens your customers use, the logic behind them, and the database that keeps everything safe.",
     p2: "When one person is both designer and developer, nothing gets lost between the two: fewer meetings, faster launches, and a product that keeps growing with you after handoff",
-    photoAlt: "Mohammed Almutassim at work",
+    points: ["Design before code", "One owner, no hand-offs", "Secure by default", "Built to grow with you"],
   },
   stack: {
-    rail: "Stack",
+    heading: "Stack",
   },
   contact: {
     rail: "Let's connect",
     heading: ["Have a project", "in mind?"],
-    highlight: "Let's talk.",
     intro:
       "I'm currently open to new projects and collaborations. Tell me what you're building and I'll reply within 24 hours.",
     fields: { name: "Your name", email: "Email address", message: "About the project" },
@@ -98,7 +101,7 @@ export const en = {
     sending: "Sending…",
     sent: ["Message", "received."],
     sendAnother: "Send another",
-    thanks: "Thanks {name} — I reply within 24 hours.",
+    thanks: "Thanks {name}. I reply within 24 hours.",
     thanksFallback: "there",
     errors: {
       name: "Please enter your name.",
@@ -106,11 +109,15 @@ export const en = {
       message: "A few words about the project (10+ characters).",
       generic: "The message could not be sent. Please try again.",
     },
-    location: "Jeddah, Saudi Arabia · GMT+3",
+    location: "Jeddah, Saudi Arabia",
+    info: { email: "Email", location: "Location", response: "Response time", responseValue: "Within 24 hours" },
   },
   footer: {
     copyright: "© 2026 MO Studio",
-    mid: "Full-stack portfolio",
+    blurb: "Design, frontend, backend and database from one developer in Jeddah.",
+    navTitle: "Navigation",
+    connectTitle: "Connect",
+    langTitle: "Language",
     backTop: "Back to top",
   },
   arrows: { forward: "→", diag: "↗", up: "↑" },

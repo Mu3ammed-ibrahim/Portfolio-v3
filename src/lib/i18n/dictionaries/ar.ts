@@ -2,7 +2,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 export const ar: Dictionary = {
   meta: {
-    title: "MO Studio — محمد المعتصم، مطوّر ويب متكامل",
+    title: "MO Studio | محمد المعتصم، مطوّر ويب متكامل",
     description:
       "تصميم وواجهات وخدمات خلفية وقواعد بيانات من مطوّر واحد في جدة. تطبيقات ويب وواجهات برمجة ولوحات تحكم تُسلَّم كاملة.",
   },
@@ -24,12 +24,16 @@ export const ar: Dictionary = {
     copy: "تصميم وواجهات وخدمات خلفية وقواعد بيانات من مطوّر واحد. بلا تسليمات ضائعة.",
     cta: "استعرض أعمالي",
     socials: "تجدني على",
-    badge: "متاح لمشاريع جديدة / MO Studio / ",
+    // Said twice: the ring stretches short strings to fit, and stretched Arabic loses its letter joins.
+    badge: "متاح لمشاريع جديدة / MO Studio / متاح لمشاريع جديدة / MO Studio / ",
     portraitAlt: "محمد المعتصم",
   },
   work: {
-    rail: "أعمالي",
-    more: ["مشاريع أخرى", "على GitHub"],
+    rail: "مشاريع مختارة",
+    heading: "أعمالي",
+    viewAll: "كل المشاريع على GitHub",
+    prev: "المشاريع السابقة",
+    next: "المشاريع التالية",
     repo: "الكود",
     projects: {
       drphoto: "موقع علامة بصرية طبية",
@@ -42,7 +46,7 @@ export const ar: Dictionary = {
     },
   },
   services: {
-    rail: "ما أقدّمه",
+    heading: "ما أقدّمه",
     items: [
       {
         title: "تصميم الواجهات",
@@ -67,6 +71,7 @@ export const ar: Dictionary = {
     ],
   },
   stats: {
+    heading: "بالأرقام",
     labels: [
       ["سنوات في", "تطوير الويب"],
       ["منتجًا وميزة", "تم تسليمها"],
@@ -75,27 +80,25 @@ export const ar: Dictionary = {
     ],
   },
   about: {
-    rail: "منهجي",
-    heading: ["ما تراه على الشاشة يبدأ مما لا تراه"],
-    highlight: "للعين",
+    heading: "ما تراه على الشاشة يبدأ مما",
+    highlight: "لا تراه",
     p1: "أنا محمد المعتصم جلاب. أصل بفكرتك عبر MO Studio إلى منتج يعمل فعلًا: الشاشات التي يستخدمها عملاؤك، والمنطق الذي يشغّلها، وقاعدة البيانات التي تحفظ كل شيء بأمان",
     p2: "حين يكون المصمّم والمطوّر شخصًا واحدًا، لا يضيع شيء بينهما: اجتماعات أقل، إطلاق أسرع، ومنتج يكبر معك بعد التسليم",
-    photoAlt: "محمد المعتصم أثناء العمل",
+    points: ["التصميم قبل الكود", "مسؤول واحد بلا تسليمات", "أمان من الأساس", "بنية تكبر معك"],
   },
   stack: {
-    rail: "التقنيات",
+    heading: "التقنيات",
   },
   contact: {
     rail: "لنتواصل",
     heading: ["لديك مشروع", "في بالك؟"],
-    highlight: "لنتحدّث.",
     intro: "أنا متاح حاليًا لمشاريع وتعاونات جديدة. أخبرني بما تبنيه وسأرد عليك خلال 24 ساعة.",
     fields: { name: "الاسم", email: "البريد الإلكتروني", message: "عن المشروع" },
     submit: "إرسال الاستفسار",
     sending: "جارٍ الإرسال…",
     sent: ["تم استلام", "رسالتك."],
     sendAnother: "أرسل رسالة أخرى",
-    thanks: "شكرًا {name} — أرد عليك خلال 24 ساعة.",
+    thanks: "شكرًا {name}، أرد عليك خلال 24 ساعة.",
     thanksFallback: "لك",
     errors: {
       name: "الرجاء كتابة اسمك.",
@@ -103,11 +106,15 @@ export const ar: Dictionary = {
       message: "اكتب بعض التفاصيل عن المشروع (10 أحرف على الأقل).",
       generic: "تعذّر إرسال الرسالة. حاول مرة أخرى.",
     },
-    location: "جدة، السعودية · غرينتش +3",
+    location: "جدة، السعودية",
+    info: { email: "البريد الإلكتروني", location: "الموقع", response: "زمن الرد", responseValue: "خلال 24 ساعة" },
   },
   footer: {
     copyright: "© 2026 MO Studio",
-    mid: "ملف أعمال مطوّر ويب متكامل",
+    blurb: "تصميم وواجهات وخدمات خلفية وقواعد بيانات من مطوّر واحد في جدة.",
+    navTitle: "التنقل",
+    connectTitle: "تواصل",
+    langTitle: "اللغة",
     backTop: "العودة للأعلى",
   },
   arrows: { forward: "←", diag: "↖", up: "↑" },
