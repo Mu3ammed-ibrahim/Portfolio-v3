@@ -30,12 +30,28 @@ function LenisOnGsapTicker() {
     gsap.ticker.add(update);
     // Lag smoothing would make Lenis jump after a dropped frame instead of catching up.
     gsap.ticker.lagSmoothing(0);
+
+    // Lenis's own `anchors` option doesn't cancel the browser's hash jump, so the page flashes to the
+    // target for a frame before Lenis pulls it back to glide. Handle same-page hash links here instead.
+    // On window, so React handlers (e.g. the mobile drawer's) have already had a chance to claim the click.
+    const onClick = (event: MouseEvent) => {
+      const lenis = lenisRef.current?.lenis;
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href^="#"]') : null;
+      if (!lenis || !link || event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      lenis.scrollTo(link.hash);
+      history.pushState(null, "", link.hash);
+    };
+    window.addEventListener("click", onClick);
+
     return () => {
+      window.removeEventListener("click", onClick);
       gsap.ticker.remove(update);
       gsap.ticker.lagSmoothing(500, 33);
     };
   }, []);
 
   // `root` with no children renders nothing and exposes the instance to `useLenis()` anywhere.
-  return <ReactLenis root autoRaf={false} options={{ anchors: true }} ref={lenisRef} />;
+  return <ReactLenis root autoRaf={false} ref={lenisRef} />;
 }

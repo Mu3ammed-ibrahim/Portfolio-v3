@@ -29,6 +29,6 @@ export function useCounter(ref: RefObject<HTMLElement | null>, target: number) {
         };
       });
     },
-    { dependencies: [target] },
+    { dependencies: [target], revertOnUpdate: true },
   );
 }
