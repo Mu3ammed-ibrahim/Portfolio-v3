@@ -139,6 +139,13 @@
   }
 }
 
+/* The intro overlay holds the page still until it starts to leave. Keeping the scrollbar's gutter
+   means nothing reflows when scrolling comes back, so ScrollTrigger's measurements stay valid. */
+html:has(#intro[data-intro="play"]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
 /* Unlayered on purpose: shadcn's base layer sets its own focus outline and would win inside @layer */
 :focus-visible {
   outline: 2px solid var(--brand);

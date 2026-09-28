@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans_Arabic, Noto_Kufi_Arabic } from "next/font/google";
+import { IntroOverlay } from "@/features/intro/components/IntroOverlay";
 import { SmoothScroll } from "@/features/site-shell/components/SmoothScroll";
 import { defaultLocale, dirOf, isLocale, locales } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -59,6 +60,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       className={`${archivo.variable} ${kufi.variable} ${plexArabic.variable}`}
     >
       <body className="min-h-dvh overflow-x-clip">
+        {/* First in <body> so its parse-time script runs before any page content paints */}
+        <IntroOverlay />
         <SmoothScroll />
         {children}
       </body>
