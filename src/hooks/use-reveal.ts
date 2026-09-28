@@ -1,9 +1,12 @@
 import { useRef } from "react";
 import { EASE_OUT, MOTION_OK, REVEAL_START, gsap, useGSAP } from "@/lib/gsap";
+import { scrubWords, splitReveal } from "@/lib/text-motion";
 
 /**
- * Scroll reveal for every `[data-reveal]` descendant of the returned scope.
- * The attribute value is an optional delay in seconds, so siblings can stagger.
+ * Scroll reveals for descendants of the returned scope:
+ * - `[data-reveal]` fades up; the value is an optional delay in seconds, so siblings can stagger.
+ * - `[data-split]` headings rise letter by letter (word by word in Arabic) from a line mask.
+ * - `[data-scrub]` headings brighten word by word, tied to scroll position.
  * Nothing is hidden in CSS: with JS off or reduced motion on, content is simply visible.
  */
 export function useReveal<T extends HTMLElement>() {
@@ -11,7 +14,7 @@ export function useReveal<T extends HTMLElement>() {
 
   useGSAP(
     () => {
-      // matchMedia reverts these tweens (restoring visibility) if the user turns reduced motion on.
+      // matchMedia reverts these tweens and splits (restoring the markup) if reduced motion turns on.
       gsap.matchMedia().add(MOTION_OK, () => {
         gsap.utils.toArray<HTMLElement>("[data-reveal]", scope.current).forEach((item) => {
           gsap.from(item, {
@@ -23,6 +26,8 @@ export function useReveal<T extends HTMLElement>() {
             scrollTrigger: { trigger: item, start: REVEAL_START, once: true },
           });
         });
+        gsap.utils.toArray<HTMLElement>("[data-split]", scope.current).forEach(splitReveal);
+        gsap.utils.toArray<HTMLElement>("[data-scrub]", scope.current).forEach(scrubWords);
       });
     },
     { scope },

@@ -1,10 +1,12 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 
 // Registered once here; consumers import gsap from this module so registration has always run.
-gsap.registerPlugin(useGSAP, ScrollTrigger, CustomEase);
+gsap.registerPlugin(useGSAP, ScrollTrigger, CustomEase, SplitText, DrawSVGPlugin);
 
 // Same curve as the --ease-out-expo CSS token, so JS and CSS motion share one feel.
 export const EASE_OUT = "out-expo";
@@ -16,4 +18,4 @@ export const REVEAL_START = "top 88%";
 export const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 export const MOTION_REDUCE = "(prefers-reduced-motion: reduce)";
 
-export { gsap, ScrollTrigger, useGSAP };
+export { gsap, ScrollTrigger, SplitText, useGSAP };

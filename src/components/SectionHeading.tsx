@@ -5,6 +5,8 @@ type SectionHeadingProps = {
   eyebrow?: string;
   /** "md" for long headings that share a row with other columns. */
   size?: "lg" | "md";
+  /** "split" rises letter by letter on entry; "scrub" brightens word by word with scroll. */
+  motion?: "split" | "scrub";
   children: ReactNode;
 };
 
@@ -14,18 +16,22 @@ const sizes = {
 };
 
 /** Condensed display title closed by the brand-coloured full stop from the reference. */
-export function SectionHeading({ eyebrow, size = "lg", children }: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, size = "lg", motion = "split", children }: SectionHeadingProps) {
   return (
-    <div data-reveal>
+    <div>
       {eyebrow ? (
-        <p className="meta mb-4 flex items-center gap-3 text-brand">
+        <p data-reveal className="meta mb-4 flex items-center gap-3 text-brand">
           {eyebrow}
           <span aria-hidden className="font-latin tracking-[.3em]">
             {"//////"}
           </span>
         </p>
       ) : null}
-      <h2 className={`disp ${sizes[size]}`}>
+      <h2
+        data-split={motion === "split" ? "" : undefined}
+        data-scrub={motion === "scrub" ? "" : undefined}
+        className={`disp ${sizes[size]}`}
+      >
         {children}
         <span className="text-brand">.</span>
       </h2>

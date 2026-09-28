@@ -9,7 +9,7 @@ export function StackSection({ t }: StackSectionProps) {
   return (
     <SectionBand id="stack">
       <RevealGroup className="wrap flex flex-col gap-8 py-14 lg:flex-row lg:items-center lg:gap-14">
-        <h2 data-reveal className="disp flex-none text-[28px] rtl:text-2xl">
+        <h2 data-split className="disp flex-none text-[28px] rtl:text-2xl">
           {t.stack.heading}
           <span className="text-brand">.</span>
         </h2>

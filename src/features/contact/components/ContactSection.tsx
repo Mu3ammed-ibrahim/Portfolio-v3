@@ -25,7 +25,7 @@ export function ContactSection({ t }: ContactSectionProps) {
             </span>
           </p>
           <h2
-            data-reveal
+            data-split
             className="disp relative text-[clamp(44px,4.6vw,76px)] text-ink rtl:text-[clamp(34px,3.6vw,58px)]"
           >
             {lineA}

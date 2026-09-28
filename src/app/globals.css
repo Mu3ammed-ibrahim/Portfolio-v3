@@ -217,6 +217,25 @@
 .disp:lang(en) {
   font-family: var(--font-latin);
 }
+/* SplitText line masks clip at the line box, and .disp's 0.9 leading would crop cap tops and
+   descenders. Same headroom trick as the hero's clip spans: pad the mask, pull the layout back.
+   The masks are stacked blocks whose vertical margins collapse, so all of a line's pull-back sits
+   on its end margin, and the first and last lines only undo their own outer padding. */
+.split-line-mask {
+  --mask-top: 0.08em;
+  --mask-bottom: 0.08em;
+  padding-block: var(--mask-top) var(--mask-bottom);
+  margin-block-end: calc(-1 * (var(--mask-top) + var(--mask-bottom)));
+}
+.split-line-mask:first-child {
+  margin-block-start: calc(-1 * var(--mask-top));
+}
+.split-line-mask:last-child {
+  margin-block-end: calc(-1 * var(--mask-bottom));
+}
+.split-line-mask:lang(ar) {
+  --mask-bottom: 0.22em;
+}
 [dir="rtl"] .rail {
   font-stretch: 100%;
   font-size: 18px;
