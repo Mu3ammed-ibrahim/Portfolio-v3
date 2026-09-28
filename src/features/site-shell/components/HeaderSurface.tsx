@@ -1,7 +1,7 @@
 "use client";
 
-import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState, type ReactNode } from "react";
+import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 type HeaderSurfaceProps = { children: ReactNode };
 
@@ -10,12 +10,14 @@ const SOLID_AFTER = 24;
 
 /**
  * The header floats on the hero photo, then takes a solid backdrop once content scrolls under it.
- * State only flips at the threshold; React skips re-rendering when the boolean is unchanged.
+ * The trigger only toggles when the threshold is crossed, so React re-renders just at that moment.
  */
 export function HeaderSurface({ children }: HeaderSurfaceProps) {
-  const { scrollY } = useScroll();
   const [solid, setSolid] = useState(false);
-  useMotionValueEvent(scrollY, "change", (value) => setSolid(value > SOLID_AFTER));
+
+  useGSAP(() => {
+    ScrollTrigger.create({ start: SOLID_AFTER, end: "max", onToggle: (self) => setSolid(self.isActive) });
+  });
 
   return (
     <header

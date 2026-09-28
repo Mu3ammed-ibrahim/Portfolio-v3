@@ -1,7 +1,5 @@
-import { animate, inView } from "motion";
-import { useReducedMotion } from "motion/react";
-import { useEffect, useRef } from "react";
-import { EASE_OUT, IN_VIEW_MARGIN } from "@/lib/motion";
+import { useRef } from "react";
+import { EASE_OUT, MOTION_OK, REVEAL_START, gsap, useGSAP } from "@/lib/gsap";
 
 /**
  * Scroll reveal for every `[data-reveal]` descendant of the returned scope.
@@ -10,29 +8,25 @@ import { EASE_OUT, IN_VIEW_MARGIN } from "@/lib/motion";
  */
 export function useReveal<T extends HTMLElement>() {
   const scope = useRef<T>(null);
-  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const items = scope.current?.querySelectorAll<HTMLElement>("[data-reveal]");
-    if (reduceMotion || !items?.length) return;
-
-    const stops = Array.from(items, (item) => {
-      animate(item, { opacity: 0, y: 28 }, { duration: 0 });
-      return inView(
-        item,
-        () => {
-          animate(
-            item,
-            { opacity: 1, y: 0 },
-            { duration: 0.9, ease: EASE_OUT, delay: Number(item.dataset.reveal) || 0 },
-          );
-        },
-        { margin: IN_VIEW_MARGIN },
-      );
-    });
-
-    return () => stops.forEach((stop) => stop());
-  }, [reduceMotion]);
+  useGSAP(
+    () => {
+      // matchMedia reverts these tweens (restoring visibility) if the user turns reduced motion on.
+      gsap.matchMedia().add(MOTION_OK, () => {
+        gsap.utils.toArray<HTMLElement>("[data-reveal]", scope.current).forEach((item) => {
+          gsap.from(item, {
+            opacity: 0,
+            y: 28,
+            duration: 0.9,
+            ease: EASE_OUT,
+            delay: Number(item.dataset.reveal) || 0,
+            scrollTrigger: { trigger: item, start: REVEAL_START, once: true },
+          });
+        });
+      });
+    },
+    { scope },
+  );
 
   return scope;
 }

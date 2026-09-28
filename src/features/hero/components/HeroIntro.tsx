@@ -1,39 +1,53 @@
 "use client";
 
-import { MotionConfig, motion, type Variants } from "motion/react";
-import type { ReactNode } from "react";
-import { EASE_OUT } from "@/lib/motion";
-
-const container: Variants = {
-  hidden: {},
-  shown: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
-};
-
-const rise: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  shown: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE_OUT } },
-};
-
-// Headline lines slide up out of their own clip box rather than fading.
-const line: Variants = {
-  hidden: { y: "110%" },
-  shown: { y: 0, transition: { duration: 0.9, ease: EASE_OUT } },
-};
+import { useRef, type ReactNode } from "react";
+import { EASE_OUT, MOTION_OK, MOTION_REDUCE, gsap, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/utils";
 
 type HeroIntroProps = { children: ReactNode; className?: string };
 
 /**
- * Plays the hero entrance once, in reading order. `initial` must not branch on the reduced-motion
- * preference: the server cannot see it, so the first render would differ and break hydration.
- * MotionConfig applies the preference after hydration instead, dropping the slides and keeping the fades.
+ * Plays the hero entrance once, in reading order. The hidden start state ships in the server HTML
+ * as classes on each HeroItem, so there's no flash before hydration and nothing branches the render
+ * on the reduced-motion preference. With reduced motion the slides are dropped and the fades kept.
  */
 export function HeroIntro({ children, className }: HeroIntroProps) {
+  const scope = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const items = gsap.utils.toArray<HTMLElement>("[data-hero]", scope.current);
+      const at = (index: number) => 0.15 + index * 0.1;
+
+      gsap.matchMedia().add({ ok: MOTION_OK, reduce: MOTION_REDUCE }, (context) => {
+        const reduce = Boolean(context.conditions?.reduce);
+        const timeline = gsap.timeline();
+
+        items.forEach((item, index) => {
+          if (reduce) {
+            gsap.set(item, { y: 0, opacity: 0 });
+            timeline.to(item, { opacity: 1, duration: 0.8, ease: EASE_OUT }, at(index));
+          } else if (item.dataset.hero === "line") {
+            // Headline lines slide up out of their own clip box rather than fading.
+            timeline.to(item, { y: 0, duration: 0.9, ease: EASE_OUT }, at(index));
+          } else {
+            timeline.fromTo(
+              item,
+              { opacity: 0, y: 24 },
+              { opacity: 1, y: 0, duration: 0.8, ease: EASE_OUT },
+              at(index),
+            );
+          }
+        });
+      });
+    },
+    { scope },
+  );
+
   return (
-    <MotionConfig reducedMotion="user">
-      <motion.div className={className} variants={container} initial="hidden" animate="shown">
-        {children}
-      </motion.div>
-    </MotionConfig>
+    <div ref={scope} className={className}>
+      {children}
+    </div>
   );
 }
 
@@ -41,8 +55,13 @@ type HeroItemProps = { children: ReactNode; className?: string; kind?: "rise" | 
 
 export function HeroItem({ children, className, kind = "rise" }: HeroItemProps) {
   return (
-    <motion.div className={className} variants={kind === "line" ? line : rise}>
+    <div
+      data-hero={kind}
+      // `transform` rather than Tailwind's translate utility, which sets the separate
+      // `translate` property and would stack with the transform GSAP writes.
+      className={cn(kind === "line" ? "transform-[translateY(110%)]" : "opacity-0", className)}
+    >
       {children}
-    </motion.div>
+    </div>
   );
 }

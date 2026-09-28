@@ -1,17 +1,21 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "motion/react";
+import { useRef } from "react";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  // A light spring smooths wheel steps without visibly lagging the scrollbar.
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
+  const bar = useRef<HTMLDivElement>(null);
+
+  // Scrubbed straight to scroll position; Lenis already smooths the scroll itself, so no spring is needed.
+  useGSAP(() => {
+    gsap.to(bar.current, { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: true } });
+  });
 
   return (
-    <motion.div
+    <div
+      ref={bar}
       aria-hidden
-      style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-30 h-0.5 origin-left bg-brand rtl:origin-right"
+      className="fixed inset-x-0 top-0 z-30 h-0.5 origin-left bg-brand transform-[scaleX(0)] rtl:origin-right"
     />
   );
 }
