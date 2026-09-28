@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,8 +128,9 @@
     /* Anchor targets land below the 64px sticky header */
     scroll-padding-top: 72px;
   }
+  /* Fallback glide for when Lenis isn't running (JS off or not yet hydrated); Lenis owns it otherwise */
   @media (prefers-reduced-motion: no-preference) {
-    html {
+    html:not(.lenis) {
       scroll-behavior: smooth;
     }
   }

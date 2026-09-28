@@ -49,6 +49,8 @@ export function WorkCarousel({ header, action, labels, children }: WorkCarouselP
       <ul
         ref={track}
         data-reveal="0.1"
+        // Horizontal swipes on the track stay native so scroll-snap keeps working under Lenis.
+        data-lenis-prevent-horizontal
         className="grid snap-x snap-mandatory auto-cols-[85%] grid-flow-col gap-6 overflow-x-auto overscroll-x-contain pb-6 [scrollbar-color:var(--brand)_transparent] [scrollbar-width:thin] sm:auto-cols-[calc((100%-24px)/2)] lg:auto-cols-[calc((100%-48px)/3)]"
       >
         {children}

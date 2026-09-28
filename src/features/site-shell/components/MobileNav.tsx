@@ -1,6 +1,7 @@
 "use client";
 
 import { ListIcon } from "@phosphor-icons/react";
+import { useLenis } from "lenis/react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -17,12 +18,20 @@ type MobileNavProps = {
 export function MobileNav({ items, dir, labels }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const pendingTarget = useRef<SectionId | null>(null);
+  const lenis = useLenis();
 
   const navigate = (id: SectionId, event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     pendingTarget.current = id;
     setOpen(false);
   };
+
+  // The drawer's scroll lock lands on <body> (it carries an overflow style), which Lenis can't see
+  // from <html>, so pause Lenis explicitly or the page would still glide behind the panel.
+  useEffect(() => {
+    if (open) lenis?.stop();
+    else lenis?.start();
+  }, [open, lenis]);
 
   // The drawer locks page scroll until its panel unmounts after the exit animation,
   // so wait for the panel to be gone before scrolling to the chosen section.
@@ -36,11 +45,14 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
       }
       const id = pendingTarget.current;
       pendingTarget.current = null;
-      if (id) document.getElementById(id)?.scrollIntoView();
+      const target = id && document.getElementById(id);
+      if (!target) return;
+      if (lenis) lenis.scrollTo(target);
+      else target.scrollIntoView();
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [open]);
+  }, [open, lenis]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
