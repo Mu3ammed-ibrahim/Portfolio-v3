@@ -278,6 +278,108 @@
   }
 }
 
+/*
+ * Hero beams. Both stay invisible until HeroIntro marks its scope [data-hero-ready], so they start
+ * after the entrance instead of competing with it, and both drop out under reduced motion.
+ */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+/* Mask position runs 110% → -10% so the band enters and leaves fully off the text */
+@keyframes beam-glint {
+  0% { mask-position: 110% 0; }
+  45%, 100% { mask-position: -10% 0; }
+}
+
+/* A light running around the border: a conic sweep masked down to a 2px ring (::before), plus a
+   blurred copy masked to a wider ring outside it for the halo (::after). Filters run before masks,
+   so the blur has to live on its own layer to survive. The brand-soft tip keeps the beam visible
+   on the solid brand button. */
+@utility beam-edge {
+  position: relative;
+  /* The gradient is written on the pseudo-elements themselves: that is where --beam-angle animates.
+     Declared on the host, var() would resolve against the host's static 0deg and inherit frozen. */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0 68%,
+      var(--brand) 88%,
+      var(--brand-soft) 97%,
+      transparent 99%
+    );
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+  &::before {
+    inset: -1px;
+    padding: 2px;
+  }
+  &::after {
+    inset: -10px;
+    padding: 10px;
+    filter: blur(6px);
+  }
+  &:where([data-hero-ready] *)::before,
+  &:where([data-hero-ready] *)::after {
+    animation: beam-spin 3.2s linear infinite;
+  }
+  &:where([data-hero-ready] *)::before {
+    opacity: 1;
+  }
+  &:where([data-hero-ready] *)::after {
+    opacity: 0.75;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+/* A glint sweeping along the letter outlines: an outlined copy of the text (from data-text, kept out
+   of the accessibility tree by the empty alt) shown through a narrow moving mask band. */
+@utility beam-text {
+  position: relative;
+  &::after {
+    content: attr(data-text) / "";
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--beam-color, var(--brand));
+    filter: drop-shadow(0 0 6px var(--beam-color, var(--brand)));
+    mask-image: linear-gradient(100deg, transparent 44%, #000 50%, transparent 56%);
+    mask-size: 300% 100%;
+    mask-repeat: no-repeat;
+    mask-position: 110% 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+  &:where([data-hero-ready] *)::after {
+    opacity: 1;
+    animation: beam-glint 4.5s ease-in-out infinite;
+  }
+  /* Sweep with the reading direction */
+  &:where([dir="rtl"] *)::after {
+    animation-direction: reverse;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      display: none;
+    }
+  }
+}
+
 /* Dot-grid texture for decorative layers */
 @utility dots {
   background-image: radial-gradient(var(--divider) 1.2px, transparent 1.6px);

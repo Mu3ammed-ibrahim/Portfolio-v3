@@ -37,12 +37,19 @@ export function Hero({ t }: HeroProps) {
           <h1 className="disp mb-7 text-[clamp(52px,7.2vw,112px)] rtl:text-[clamp(40px,5vw,80px)]">
             {/* Each line is its own clip box so the intro can slide it up out of view. */}
             <span className="block overflow-hidden pb-[.08em] -mb-[.08em] rtl:pb-[.22em] rtl:-mb-[.22em]">
-              <HeroItem kind="line">{plain}</HeroItem>
+              <HeroItem kind="line">
+                {/* data-text feeds the outlined copy the red glint sweeps across */}
+                <span className="beam-text block" data-text={plain}>
+                  {plain}
+                </span>
+              </HeroItem>
             </span>
             <span className="block overflow-hidden pb-[.08em] -mb-[.08em] rtl:pb-[.22em] rtl:-mb-[.22em]">
               <HeroItem kind="line" className="text-brand">
-                {accent}
-                <span className="text-ink">.</span>
+                <span className="beam-text block [--beam-color:var(--brand-soft)]" data-text={`${accent}.`}>
+                  {accent}
+                  <span className="text-ink">.</span>
+                </span>
               </HeroItem>
             </span>
           </h1>
@@ -52,8 +59,10 @@ export function Hero({ t }: HeroProps) {
           </HeroItem>
 
           <HeroItem className="mb-10 flex flex-wrap gap-3">
-            <ActionLink href="#work">{t.hero.cta}</ActionLink>
-            <ActionLink href="#contact" variant="outline">
+            <ActionLink href="#work" beam>
+              {t.hero.cta}
+            </ActionLink>
+            <ActionLink href="#contact" variant="outline" beam>
               {t.nav.cta}
             </ActionLink>
           </HeroItem>

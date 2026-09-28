@@ -8,6 +8,8 @@ type ActionLinkProps = {
   variant?: "solid" | "outline";
   size?: "md" | "sm";
   external?: boolean;
+  /** Runs the hero's red light around the border (see `beam-edge` in globals.css). */
+  beam?: boolean;
 };
 
 // Labels on the brand fill use the ground colour: white on #ec3013 is 4.2:1, ground is 4.6:1.
@@ -25,6 +27,7 @@ export function ActionLink({
   variant = "solid",
   size = "md",
   external,
+  beam,
 }: ActionLinkProps) {
   return (
     <a
@@ -34,6 +37,7 @@ export function ActionLink({
         "group/action meta inline-flex items-center gap-3 border text-[11px] font-bold whitespace-nowrap transition-[background-color,color,border-color,scale] duration-300 active:scale-[0.98]",
         variants[variant],
         sizes[size],
+        beam && "beam-edge",
       )}
     >
       {children}

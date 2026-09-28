@@ -21,7 +21,10 @@ export function HeroIntro({ children, className }: HeroIntroProps) {
 
       gsap.matchMedia().add({ ok: MOTION_OK, reduce: MOTION_REDUCE }, (context) => {
         const reduce = Boolean(context.conditions?.reduce);
-        const timeline = gsap.timeline();
+        // Marks the scope once the entrance lands; the hero beams in globals.css wait for it.
+        const timeline = gsap.timeline({
+          onComplete: () => scope.current?.setAttribute("data-hero-ready", ""),
+        });
 
         items.forEach((item, index) => {
           if (reduce) {
