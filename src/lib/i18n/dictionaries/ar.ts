@@ -21,7 +21,7 @@ export const ar: Dictionary = {
   hero: {
     kicker: "مطوّر ويب متكامل",
     lines: ["أُصمّم وأبني", "منتجات رقمية"],
-    copy: "تصميم وواجهات وخدمات خلفية وقواعد بيانات من مطوّر واحد. بلا تسليمات ضائعة.",
+    copy: "تصميم وواجهات وخدمات خلفية وقواعد بيانات من مطوّر واحد. بلا تسليمات ضائعة",
     cta: "استعرض أعمالي",
     socials: "تجدني على",
     // Said twice: the ring stretches short strings to fit, and stretched Arabic loses its letter joins.
