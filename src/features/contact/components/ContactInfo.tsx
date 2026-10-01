@@ -1,4 +1,9 @@
-import { ClockIcon, EnvelopeSimpleIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  ClockIcon,
+  EnvelopeSimpleIcon,
+  MapPinIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import { site } from "@/lib/site";
 
@@ -12,6 +17,21 @@ export function ContactInfo({ t }: ContactInfoProps) {
       value: (
         <a href={`mailto:${site.email}`} dir="ltr" className="transition-colors hover:text-brand">
           {site.email}
+        </a>
+      ),
+    },
+    {
+      Icon: WhatsappLogoIcon,
+      label: t.info.whatsapp,
+      value: (
+        <a
+          href={site.whatsapp}
+          target="_blank"
+          rel="noreferrer"
+          dir="ltr"
+          className="transition-colors hover:text-brand"
+        >
+          {site.whatsappLabel}
         </a>
       ),
     },

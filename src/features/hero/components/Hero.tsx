@@ -1,4 +1,9 @@
-import { EnvelopeSimpleIcon, GithubLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  EnvelopeSimpleIcon,
+  GithubLogoIcon,
+  InstagramLogoIcon,
+  LinkedinLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { ActionLink } from "@/components/ActionLink";
 import { HeroBackground } from "@/features/hero/components/HeroBackground";
 import { HeroIntro, HeroItem } from "@/features/hero/components/HeroIntro";
@@ -11,6 +16,7 @@ type HeroProps = { t: Dictionary };
 const socials = [
   { href: site.github, label: "GitHub", Icon: GithubLogoIcon, external: true },
   { href: site.linkedin, label: "LinkedIn", Icon: LinkedinLogoIcon, external: true },
+  { href: site.instagram, label: "Instagram", Icon: InstagramLogoIcon, external: true },
   { href: `mailto:${site.email}`, label: "Email", Icon: EnvelopeSimpleIcon, external: false },
 ];
 

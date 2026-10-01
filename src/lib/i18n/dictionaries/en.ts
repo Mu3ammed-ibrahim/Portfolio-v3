@@ -109,7 +109,13 @@ export const en = {
       generic: "The message could not be sent. Please try again.",
     },
     location: "Jeddah, Saudi Arabia",
-    info: { email: "Email", location: "Location", response: "Response time", responseValue: "Within 24 hours" },
+    info: {
+      email: "Email",
+      whatsapp: "WhatsApp",
+      location: "Location",
+      response: "Response time",
+      responseValue: "Within 24 hours",
+    },
   },
   footer: {
     copyright: "© 2026 MO Studio",

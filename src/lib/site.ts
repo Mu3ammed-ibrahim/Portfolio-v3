@@ -5,6 +5,10 @@ export const site = {
   github: "https://github.com/Mu3ammed-ibrahim",
   githubLabel: "github.com/Mu3ammed-ibrahim",
   linkedin: "https://www.linkedin.com/in/mohammed-almutassim-gallab-39a11098/",
+  instagram: "https://www.instagram.com/mohammed_studio",
+  // wa.me takes digits only: country code first, no "+" or spaces.
+  whatsapp: "https://wa.me/966558636746",
+  whatsappLabel: "+966 55 863 6746",
 } as const;
 
 export const sectionIds = ["about", "services", "stack", "work", "contact"] as const;

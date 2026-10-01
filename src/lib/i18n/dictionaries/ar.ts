@@ -106,7 +106,13 @@ export const ar: Dictionary = {
       generic: "تعذّر إرسال الرسالة. حاول مرة أخرى.",
     },
     location: "جدة، السعودية",
-    info: { email: "البريد الإلكتروني", location: "الموقع", response: "زمن الرد", responseValue: "خلال 24 ساعة" },
+    info: {
+      email: "البريد الإلكتروني",
+      whatsapp: "واتساب",
+      location: "الموقع",
+      response: "زمن الرد",
+      responseValue: "خلال 24 ساعة",
+    },
   },
   footer: {
     copyright: "© 2026 MO Studio",
