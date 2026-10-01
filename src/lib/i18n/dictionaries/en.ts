@@ -40,7 +40,6 @@ export const en = {
       drphoto: "Medical visual brand website",
       "dhil-alsharq": "Restaurant website",
       riwaq: "Café website",
-      eshop: "E-commerce website",
       "nabd-alibtikar": "Innovation experience website",
       trackify: "Finance tracker app",
       kobonvip: "Coupon platform website",

@@ -48,30 +48,28 @@ export const projects: Project[] = [
     image: "/work/drphoto.png",
     tags: ["Next.js", "Tailwind", "Bilingual"],
     name: { latin: "Dr.Photo" },
+    liveHref: "https://www.dr-photograph.com/",
   },
   {
     slug: "dhil-alsharq",
     image: "/work/dhil-alsharq.png",
     tags: ["React", "Motion", "RTL"],
     name: { arabic: "ظل الشرق" },
+    liveHref: "https://shalal-sharq-dine.base44.app/",
   },
   {
     slug: "riwaq",
     image: "/work/riwaq.png",
     tags: ["Next.js", "Tailwind", "Motion"],
     name: { latin: "Riwaq" },
-  },
-  {
-    slug: "eshop",
-    image: "/work/eshop.png",
-    tags: ["React", "Redux Toolkit", "Node"],
-    name: { latin: "Eshop" },
+    liveHref: "https://cafe-landing-page-psi-roan.vercel.app/",
   },
   {
     slug: "nabd-alibtikar",
     image: "/work/nabd-alibtikar.png",
     tags: ["Next.js", "Tailwind", "Bilingual"],
     name: { arabic: "نبض الابتكار" },
+    liveHref: "https://www.nbdco.sa/ar",
   },
   {
     slug: "trackify",
@@ -85,5 +83,6 @@ export const projects: Project[] = [
     image: "/work/kobonvip.png",
     tags: ["Next.js", "Tailwind", "RTL"],
     name: { latin: "Kobon VIP", arabic: "كوبون VIP" },
+    liveHref: "https://www.kobonvip.com/",
   },
 ];

@@ -39,7 +39,6 @@ export const ar: Dictionary = {
       drphoto: "موقع علامة بصرية طبية",
       "dhil-alsharq": "موقع مطعم",
       riwaq: "موقع مقهى",
-      eshop: "متجر إلكتروني",
       "nabd-alibtikar": "موقع تجربة ابتكار",
       trackify: "تطبيق متابعة مالية",
       kobonvip: "موقع منصة كوبونات",
