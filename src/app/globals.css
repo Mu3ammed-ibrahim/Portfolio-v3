@@ -400,3 +400,18 @@ html:has(#intro[data-intro="play"]) {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 96px 100%);
   }
 }
+
+/* Both ends of the looping stack row dissolve into the band, so the loop reads as endless instead
+   of as a clipped box. The gradient is mirror-symmetric, so unlike the clip-path utilities above it
+   needs no RTL variant. Applied only while [data-marquee] is set: over the fallback grid a
+   horizontal fade would just dim the first and last columns. */
+@utility marquee-fade {
+  --marquee-fade: clamp(24px, 6vw, 56px);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--marquee-fade),
+    #000 calc(100% - var(--marquee-fade)),
+    transparent
+  );
+}
