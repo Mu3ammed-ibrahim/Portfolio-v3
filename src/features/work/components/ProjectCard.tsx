@@ -8,13 +8,15 @@ type ProjectCardProps = {
   kind: string;
   repoLabel: string;
   locale: Locale;
+  /** First cards in the track: load now instead of popping in as the pan slides them on screen. */
+  eager?: boolean;
 };
 
 /**
  * The card has two destinations, so it cannot be one <a> around everything. The name is the live
  * link and stretches over the whole card via ::after; the repo link is lifted above that overlay.
  */
-export function ProjectCard({ project, kind, repoLabel, locale }: ProjectCardProps) {
+export function ProjectCard({ project, kind, repoLabel, locale, eager }: ProjectCardProps) {
   const [primary, secondary] = nameLines(project.name, locale);
 
   return (
@@ -26,12 +28,13 @@ export function ProjectCard({ project, kind, repoLabel, locale }: ProjectCardPro
           src={project.image}
           alt={primary.text}
           fill
-          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 85vw"
+          loading={eager ? "eager" : undefined}
+          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 80vw"
           className="object-cover transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03]"
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-6">
+      <div className="flex flex-1 flex-col gap-4 p-6 max-sm:in-data-pinned:gap-3 max-sm:in-data-pinned:p-4">
         <p className="meta text-[10px] text-brand">{kind}</p>
         <div className="flex items-start justify-between gap-3.5">
           <div>

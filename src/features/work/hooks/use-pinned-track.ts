@@ -1,19 +1,42 @@
 import { useLenis } from "lenis/react";
 import { useRef, type RefObject } from "react";
+import { dragToScroll } from "@/features/work/lib/drag-to-scroll";
 import { MOTION_OK, ScrollTrigger, gsap, useGSAP } from "@/lib/gsap";
 
-// Phones and tablets keep the native swipe carousel: a pinned sideways scroll fights the thumb.
-// So do screens under 650px tall, where a 4:5 poster card plus the heading can't fit on one screen.
-// 650, not the ~795px the full panel needs: the first ~145px to go off-screen is the section's empty
-// bottom padding, and a 1080p laptop at 125% scaling with a bookmarks bar is only ~696px tall.
-const PIN_QUERY = `(min-width: 1024px) and (min-height: 650px) and ${MOTION_OK}`;
+// Desktop and landscape arm. A height term is safe here: desktop chrome doesn't retract, so this
+// query can't flip while someone is mid-pan. 650, not the ~795px the full panel needs, because the
+// first ~145px to go off-screen is the section's empty bottom padding, and a 1080p laptop at 125%
+// scaling with a bookmarks bar is only ~696px tall.
+const DESKTOP_PIN = `(min-width: 1024px) and (min-height: 650px) and ${MOTION_OK}`;
+// Portrait phones pin too, but this arm deliberately carries no height term. Every iPhone straddles
+// some pixel threshold between its small and large viewport (SE 548/647, mini 632/715, standard
+// 665/750), so a `(min-height:)` here could flip the pin off the moment the address bar retracted,
+// reverting the tween under the thumb. Width and orientation are the two things browser chrome
+// cannot change. Landscape keeps the native swipe carousel: a pinned sideways pan in a 360px-tall
+// viewport is unusable. 639.98px rather than range syntax, to match Tailwind's `max-sm:` everywhere.
+const PHONE_PIN = `(max-width: 639.98px) and (orientation: portrait) and ${MOTION_OK}`;
+// Shortest small viewport that still fits the narrowest card the layout allows: 321px of chrome and
+// card text, plus 1.25x the track's 252px floor width of poster, comes to 636. Measured once below
+// rather than written into the query above, for the reason given there.
+const PHONE_MIN_SVH = 640;
 // Matches the track's gap-6.
 const GAP = 24;
 
+// window.innerHeight is the *large* viewport on iOS until the first scroll, so ask CSS for svh.
+function smallViewportHeight() {
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:fixed;top:0;width:0;height:100svh;visibility:hidden";
+  document.body.append(probe);
+  const height = probe.offsetHeight;
+  probe.remove();
+  return height;
+}
+
 /**
- * On desktop, pins the Work section and drives the track sideways with vertical scroll. The scroll
- * distance equals the track's overflow, so 1px of scroll moves the cards 1px, which is what lets
- * the arrow buttons and keyboard focus steer the page by card widths.
+ * Pins the Work section and drives the track sideways with vertical scroll, on desktop and on
+ * portrait phones tall enough to fit a card. The scroll distance equals the track's overflow, so
+ * 1px of scroll moves the cards 1px, which is what lets the arrow buttons and keyboard focus steer
+ * the page by card widths.
  * `step` and `reveal` only act while pinned; check `pinned()` and fall back to native scrolling.
  */
 export function usePinnedTrack(track: RefObject<HTMLUListElement | null>) {
@@ -28,7 +51,8 @@ export function usePinnedTrack(track: RefObject<HTMLUListElement | null>) {
     const section = element?.closest("section");
     if (!element || !section) return;
 
-    gsap.matchMedia().add(PIN_QUERY, () => {
+    // One pin, two gates. Returns the cleanup matchMedia runs when its arm stops matching.
+    const pin = (scrub: number) => {
       // Set before measuring: the flags switch the track to overflow-visible and trim the padding.
       element.dataset.pinned = "";
       section.dataset.pinned = "";
@@ -43,19 +67,33 @@ export function usePinnedTrack(track: RefObject<HTMLUListElement | null>) {
           pin: true,
           start: "top top",
           end: () => `+=${distance()}`,
-          scrub: 1,
+          scrub,
           invalidateOnRefresh: true,
         },
       });
       trigger.current = tween.scrollTrigger ?? null;
+      const stopDrag = dragToScroll(element, sign, () => trigger.current);
 
       // matchMedia reverts the tween and pin, but not these flags.
       return () => {
+        stopDrag();
         delete element.dataset.pinned;
         delete section.dataset.pinned;
         trigger.current = null;
       };
-    });
+    };
+
+    const media = gsap.matchMedia();
+    // A hard flick on a phone outruns a 1s scrub: the last card would still be easing as the section
+    // unpins. Half the smoothing there; full on desktop, where Lenis already smooths the input.
+    media.add(DESKTOP_PIN, () => pin(1));
+    // Shorter than that and there's no poster width that keeps the card's tag row on one line. Fall
+    // back to the native swipe carousel rather than clip the panel: flex centring overflows both
+    // ends, so a too-tall panel loses the heading as well as the bottom of the card.
+    media.add(PHONE_PIN, () => (smallViewportHeight() < PHONE_MIN_SVH ? undefined : pin(0.5)));
+
+    // StrictMode double-invokes effects in dev; without this the second pass stacks a second pin.
+    return () => media.kill();
   });
 
   const scrollWithin = (target: number) => {
