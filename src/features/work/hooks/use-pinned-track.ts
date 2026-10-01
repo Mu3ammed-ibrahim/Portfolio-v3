@@ -3,8 +3,10 @@ import { useRef, type RefObject } from "react";
 import { MOTION_OK, ScrollTrigger, gsap, useGSAP } from "@/lib/gsap";
 
 // Phones and tablets keep the native swipe carousel: a pinned sideways scroll fights the thumb.
-// So do screens under 700px tall, where a 4:5 poster card plus the heading can't fit on one screen.
-const PIN_QUERY = `(min-width: 1024px) and (min-height: 700px) and ${MOTION_OK}`;
+// So do screens under 650px tall, where a 4:5 poster card plus the heading can't fit on one screen.
+// 650, not the ~795px the full panel needs: the first ~145px to go off-screen is the section's empty
+// bottom padding, and a 1080p laptop at 125% scaling with a bookmarks bar is only ~696px tall.
+const PIN_QUERY = `(min-width: 1024px) and (min-height: 650px) and ${MOTION_OK}`;
 // Matches the track's gap-6.
 const GAP = 24;
 
