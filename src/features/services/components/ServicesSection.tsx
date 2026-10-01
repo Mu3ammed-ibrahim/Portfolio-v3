@@ -21,7 +21,7 @@ const spans = ["lg:col-span-3", "lg:col-span-3", "lg:col-span-2", "lg:col-span-2
 export function ServicesSection({ t }: ServicesSectionProps) {
   return (
     <section id="services" className="relative z-[1]">
-      <RevealGroup className="wrap pt-[calc(var(--cut)+56px)] pb-24">
+      <RevealGroup className="wrap pt-[calc(var(--cut)+44px)] pb-18 lg:pt-[calc(var(--cut)+56px)] lg:pb-24">
         <div className="mb-12">
           <SectionHeading>{t.services.heading}</SectionHeading>
         </div>

@@ -34,7 +34,7 @@ export function Hero({ t }: HeroProps) {
             </span>
           </HeroItem>
 
-          <h1 className="disp mb-7 text-[clamp(52px,7.2vw,112px)] rtl:text-[clamp(40px,5vw,80px)]">
+          <h1 className="disp mb-7 text-[clamp(44px,max(calc(36px+2.21vw),7.2vw),112px)] rtl:text-[clamp(34px,max(calc(29px+1.36vw),5vw),80px)]">
             {/* Each line is its own clip box so the intro can slide it up out of view. */}
             <span className="block overflow-hidden pb-[.08em] -mb-[.08em] rtl:pb-[.22em] rtl:-mb-[.22em]">
               <HeroItem kind="line">

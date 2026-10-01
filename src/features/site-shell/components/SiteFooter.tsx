@@ -99,7 +99,7 @@ type FooterColumnProps = { title: string; children: ReactNode };
 function FooterColumn({ title, children }: FooterColumnProps) {
   return (
     <div>
-      <h2 className="meta mb-5 text-[10.5px] text-ink">{title}</h2>
+      <h2 className="meta mb-5 text-ink">{title}</h2>
       {children}
     </div>
   );

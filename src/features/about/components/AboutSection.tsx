@@ -10,7 +10,7 @@ export function AboutSection({ t }: AboutSectionProps) {
   return (
     <SectionBand id="about" wedge="start">
       <div aria-hidden className="dots pointer-events-none absolute top-[18%] start-[2%] hidden h-28 w-40 lg:block" />
-      <RevealGroup className="wrap grid grid-cols-1 gap-10 py-20 lg:grid-cols-[1.05fr_1fr_.8fr] lg:items-center lg:gap-14 lg:py-24">
+      <RevealGroup className="wrap grid grid-cols-1 gap-10 py-18 lg:grid-cols-[1.05fr_1fr_.8fr] lg:items-center lg:gap-14 lg:py-24">
         <SectionHeading size="md" motion="scrub">
           {t.about.heading} <span className="text-brand">{t.about.highlight}</span>
         </SectionHeading>

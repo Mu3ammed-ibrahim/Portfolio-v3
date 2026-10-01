@@ -25,7 +25,7 @@ export function ContactInfo({ t }: ContactInfoProps) {
         <li key={label} className="flex items-start gap-4">
           <Icon aria-hidden className="mt-0.5 size-6 flex-none text-brand" />
           <div>
-            <p className="meta mb-1.5 text-[10px] text-ink-muted">{label}</p>
+            <p className="meta mb-1.5 text-ink-muted">{label}</p>
             <p className="text-[14px] text-ink">{value}</p>
           </div>
         </li>

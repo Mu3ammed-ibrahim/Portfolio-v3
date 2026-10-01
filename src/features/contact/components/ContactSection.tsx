@@ -10,7 +10,7 @@ export function ContactSection({ t }: ContactSectionProps) {
 
   return (
     <section id="contact" className="relative z-[1] overflow-hidden">
-      <RevealGroup className="wrap grid grid-cols-1 gap-12 lg:grid-cols-[.95fr_1.1fr_.8fr] lg:gap-14 lg:py-24">
+      <RevealGroup className="wrap grid grid-cols-1 gap-12 py-18 lg:grid-cols-[.95fr_1.1fr_.8fr] lg:gap-14 lg:py-24">
         {/* On mobile the column itself is the brand block; on desktop a slanted panel bleeds to the screen edge. */}
         <div className="relative -mx-6 flex flex-col justify-center bg-brand px-6 py-14 md:-mx-12 md:px-12 lg:mx-0 lg:bg-transparent lg:px-0 lg:py-0">
           <div
@@ -26,7 +26,7 @@ export function ContactSection({ t }: ContactSectionProps) {
           </p>
           <h2
             data-split
-            className="disp relative text-[clamp(44px,4.6vw,76px)] text-ink rtl:text-[clamp(34px,3.6vw,58px)]"
+            className="disp relative text-[clamp(38px,max(calc(34.4px+1.01vw),4.6vw),76px)] text-ink rtl:text-[clamp(29px,max(calc(26px+0.86vw),3.6vw),58px)]"
           >
             {lineA}
             <br />

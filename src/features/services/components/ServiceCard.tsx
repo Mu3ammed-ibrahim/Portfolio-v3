@@ -21,7 +21,7 @@ export function ServiceCard({ index, title, body, icon: Glyph }: ServiceCardProp
           className="mb-auto size-9 text-brand transition-transform duration-500 ease-out-expo group-hover/svc:-translate-y-1"
         />
         <h3 className="disp mt-10 mb-3 text-[26px] leading-none rtl:text-xl">{title}</h3>
-        <p className="max-w-[40ch] pe-16 text-[13.5px] leading-[1.7] text-ink-muted">{body}</p>
+        <p className="max-w-[40ch] pe-2 pb-6 text-[13.5px] leading-[1.7] text-ink-muted sm:pe-16 sm:pb-0">{body}</p>
 
         {/* Outlined index and brand corner wedge from the reference card */}
         <span

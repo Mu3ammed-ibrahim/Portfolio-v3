@@ -20,7 +20,7 @@ const icons = [CalendarIcon, RocketLaunchIcon, StackIcon, ClockIcon];
 export function StatsSection({ t }: StatsSectionProps) {
   return (
     <SectionBand>
-      <RevealGroup className="wrap grid grid-cols-1 gap-10 py-20 lg:grid-cols-[.7fr_2fr] lg:items-center lg:gap-14 lg:py-24">
+      <RevealGroup className="wrap grid grid-cols-1 gap-10 py-18 lg:grid-cols-[.7fr_2fr] lg:items-center lg:gap-14 lg:py-24">
         <SectionHeading>{t.stats.heading}</SectionHeading>
         <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {stats.map((stat, index) => {
@@ -33,7 +33,7 @@ export function StatsSection({ t }: StatsSectionProps) {
               >
                 <Icon aria-hidden className="size-6 text-brand" />
                 <StatCounter target={stat.target} suffix={stat.suffix} />
-                <p className="meta text-[10px] leading-[1.7] text-ink-muted">
+                <p className="meta leading-[1.7] text-ink-muted">
                   {t.stats.labels[index][0]}
                   <br />
                   {t.stats.labels[index][1]}
