@@ -48,12 +48,10 @@ export function WorkCarousel({ header, action, labels, children }: WorkCarouselP
           </button>
         </div>
       </div>
-      {/* Revealed as one block: per-card reveals would leave off-screen cards blank until they slid in,
-          because the observer counts the track's horizontal clipping as out of view.
-          While pinned, the card width is capped by viewport height so the whole panel fits on screen. */}
+      {/* Cards reveal from their vertical section trigger, not horizontal clipping, so the pinned
+          track never leaves cards blank while it moves sideways. */}
       <ul
         ref={track}
-        data-reveal="0.1"
         // Horizontal swipes on the track stay native so scroll-snap keeps working under Lenis.
         data-lenis-prevent-horizontal
         onFocus={(event) => {

@@ -34,8 +34,8 @@ export function WorkSection({ t, locale }: WorkSectionProps) {
           }
           labels={{ prev: t.work.prev, next: t.work.next }}
         >
-          {projects.map((project) => (
-            <li key={project.slug} className="snap-start">
+          {projects.map((project, index) => (
+            <li key={project.slug} data-reveal={0.1 + index * 0.08} className="snap-start">
               <ProjectCard
                 project={project}
                 kind={t.work.projects[project.slug]}
