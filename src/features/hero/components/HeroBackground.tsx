@@ -14,24 +14,54 @@ const DESKTOP = "(min-width: 64rem)";
  * slower than the page as the hero scrolls away, which gives the cut edge some depth.
  */
 export function HeroBackground({ alt }: HeroBackgroundProps) {
+  const scope = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    const hero = scope.current?.closest<HTMLElement>("section");
+    const atmosphere = scope.current?.querySelector<HTMLElement>("[data-hero-atmosphere]");
+
     gsap.matchMedia().add(MOTION_OK, () => {
       gsap.to(layer.current, { scale: 1, duration: 1.8, ease: EASE_OUT });
-      // Absolute scroll positions, no trigger element: the drift runs over the first 900px of page scroll.
-      gsap.to(layer.current, { yPercent: 12, ease: "none", scrollTrigger: { start: 0, end: 900, scrub: true } });
+
+      // The image lags behind the hero section as it leaves the viewport, creating depth without
+      // tying the effect to one fixed viewport height.
+      gsap.to(layer.current, {
+        yPercent: 12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      if (atmosphere) {
+        gsap.to(atmosphere, {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
     });
-  });
+  }, { scope });
 
   // Art direction: a <picture> lets the browser fetch only the crop for the current viewport.
   // Eager + high priority stands in for `preload`, which would force one crop on every screen.
   const common = { alt, fill: true, sizes: "100vw", loading: "eager", fetchPriority: "high" } as const;
-  const { srcSet: desktop } = getImageProps({ ...common, src: "/heroImg.png" }).props;
-  const { props: mobile } = getImageProps({ ...common, src: "/hero-img-mobileVeiw.png" });
+  const { srcSet: desktop } = getImageProps({ ...common, src: "/hero-bg-img.png" }).props;
+  const { props: mobile } = getImageProps({ ...common, src: "/hero-bg-mobileVeiw.png" });
 
   return (
-    <div className="absolute inset-0 -z-10 overflow-hidden">
+    <div ref={scope} className="absolute inset-0 -z-10 overflow-hidden">
       {/* The zoomed start state ships in the server HTML; reduced motion drops it in CSS, not by
           branching the render, so SSR and client markup match. */}
       <div
@@ -50,6 +80,11 @@ export function HeroBackground({ alt }: HeroBackgroundProps) {
           />
         </picture>
       </div>
+      <div
+        aria-hidden
+        data-hero-atmosphere
+        className="pointer-events-none absolute -inset-[12%] bg-[radial-gradient(circle_at_72%_34%,rgba(236,48,19,0.16),transparent_34%)] opacity-80 mix-blend-screen"
+      />
       {/* Scrims: from the reading edge on desktop, from the bottom on narrow screens */}
       <div className="absolute inset-0 bg-linear-to-t from-ground via-ground/70 to-ground/10 lg:bg-linear-to-r lg:from-ground lg:via-ground/60 lg:to-transparent rtl:lg:bg-linear-to-l" />
     </div>
