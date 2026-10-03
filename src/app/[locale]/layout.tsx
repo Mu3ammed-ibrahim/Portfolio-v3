@@ -17,10 +17,13 @@ const archivo = Archivo({
   display: "swap",
 });
 
+// This layout serves both locales, and a preload here would fire on /en too, where these ~250KB
+// compete with the CSS that gates first paint. Unpreloaded, /ar fetches them once its CSS uses them.
 const kufi = Noto_Kufi_Arabic({
   subsets: ["arabic"],
   variable: "--font-kufi",
   display: "swap",
+  preload: false,
 });
 
 const plexArabic = IBM_Plex_Sans_Arabic({
@@ -28,6 +31,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",
+  preload: false,
 });
 
 type LocaleParams = { params: Promise<{ locale: string }> };
