@@ -11,6 +11,7 @@ export const en = {
     services: "Services",
     about: "About",
     stack: "Stack",
+    faq: "FAQ",
     contact: "Contact",
     cta: "Let's talk",
     home: "MO Studio, back to top",
@@ -77,6 +78,48 @@ export const en = {
       ["Products &", "features shipped"],
       ["Frontend + backend", "ownership"],
       ["Response time", "on inquiries"],
+    ],
+  },
+  faq: {
+    rail: "FAQ",
+    heading: "Before we start",
+    items: [
+      {
+        q: "How do we get started?",
+        a: "Tell me about your project by WhatsApp or email in the contact section below. I reply within 24 hours, and we set up a short call to talk through your goals, your users, and the scope.",
+      },
+      {
+        q: "How much does a project cost?",
+        a: "It depends on the scope: how many screens, features, and integrations you need. After our call you get a written proposal with a fixed price before any work starts, so there are no surprises.",
+      },
+      {
+        q: "How long does it take?",
+        a: "That depends on the scope too. A landing website moves much faster than a custom dashboard or CRM. The proposal includes a timeline with clear milestones, and you see progress the whole way.",
+      },
+      {
+        q: "Why one developer instead of an agency?",
+        a: "Design, frontend, backend, and database all come from the same person, so nothing gets lost between hand-offs. That means fewer meetings and faster launches.",
+      },
+      {
+        q: "Can you build in Arabic and English?",
+        a: "Yes. I build bilingual websites with a proper right-to-left layout and Arabic typography, just like this one.",
+      },
+      {
+        q: "Do you work with clients outside Jeddah?",
+        a: "Yes. I'm based in Jeddah and work remotely with clients wherever they are.",
+      },
+      {
+        q: "Will it work well on phones?",
+        a: "Every project is built mobile-first, optimised for speed, and secure by default, with each user getting only the access they need.",
+      },
+      {
+        q: "What happens after launch?",
+        a: "I build products to grow with you, and I'm available for new features, updates, and fixes after handoff. Code ownership and the handover are spelled out in the proposal.",
+      },
+      {
+        q: "Can you improve my existing website or system?",
+        a: "Yes. I can redesign it, add new features, or rebuild the parts that are holding you back.",
+      },
     ],
   },
   about: {
