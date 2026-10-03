@@ -11,6 +11,6 @@ export const site = {
   whatsappLabel: "+966 55 863 6746",
 } as const;
 
-export const sectionIds = ["about", "services", "stack", "work", "contact"] as const;
+export const sectionIds = ["about", "services", "stack", "work", "faq", "contact"] as const;
 
 export type SectionId = (typeof sectionIds)[number];

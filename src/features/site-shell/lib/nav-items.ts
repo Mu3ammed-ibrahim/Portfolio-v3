@@ -9,6 +9,7 @@ export function getNavItems(t: Dictionary): NavItem[] {
     { id: "services", label: t.nav.services },
     { id: "stack", label: t.nav.stack },
     { id: "work", label: t.nav.work },
+    { id: "faq", label: t.nav.faq },
     { id: "contact", label: t.nav.contact },
   ];
 }
