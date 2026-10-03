@@ -62,6 +62,11 @@ export function IntroOverlay() {
       };
 
       const title = SplitText.create(q("[data-intro-title]"), { type: "chars", mask: "chars" });
+      // The title closes in from wide tracking (0.4em) to its .12em. Tweening letter-spacing itself
+      // re-lays out the line every frame, which counts as layout shift; offsetting each char's mask
+      // by its distance from the centre draws the same motion on the compositor.
+      const trackingGap = 0.28 * parseFloat(getComputedStyle(title.chars[0]).fontSize);
+      const fromCentre = (index: number) => (index - (title.masks.length - 1) / 2) * trackingGap;
       gsap.set(q("[data-intro-layer]"), { clipPath: clip(0) });
       gsap.set(parts, { strokeOpacity: 1, fillOpacity: 0 });
       // The content ships hidden so a slow hydration shows a plain panel, not the finished pose
@@ -80,7 +85,7 @@ export function IntroOverlay() {
         )
         .from(q("[data-intro-label]"), { opacity: 0, y: 12, duration: 0.6, ease: EASE_OUT }, "-=0.5")
         .from(title.chars, { yPercent: 110, duration: 0.8, ease: EASE_OUT, stagger: 0.04 }, "<0.1")
-        .from(q("[data-intro-title]"), { letterSpacing: "0.4em", duration: 1.2, ease: EASE_OUT }, "<")
+        .from(title.masks, { x: fromCentre, duration: 1.2, ease: EASE_OUT }, "<")
         .from(q("[data-intro-rule]"), { scaleX: 0, duration: 0.8, ease: EASE_OUT }, "<0.3")
         .addLabel("exit", "+=0.45")
         .to(q("[data-intro-content]"), { y: -60, opacity: 0, duration: 0.6, ease: "power3.in" }, "exit")
