@@ -1,7 +1,7 @@
 "use client";
 
+import { ListIcon } from "@phosphor-icons/react";
 import { useLenis } from "lenis/react";
-import { MenuIcon } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -26,6 +26,13 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
     setOpen(false);
   };
 
+  // The drawer's scroll lock lands on <body> (it carries an overflow style), which Lenis can't see
+  // from <html>, so pause Lenis explicitly or the page would still glide behind the panel.
+  useEffect(() => {
+    if (open) lenis?.stop();
+    else lenis?.start();
+  }, [open, lenis]);
+
   // The drawer locks page scroll until its panel unmounts after the exit animation,
   // so wait for the panel to be gone before scrolling to the chosen section.
   useEffect(() => {
@@ -38,9 +45,10 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
       }
       const id = pendingTarget.current;
       pendingTarget.current = null;
-      if (!id) return;
-      if (lenis) lenis.scrollTo(`#${id}`);
-      else document.getElementById(id)?.scrollIntoView();
+      const target = id && document.getElementById(id);
+      if (!target) return;
+      if (lenis) lenis.scrollTo(target);
+      else target.scrollIntoView();
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
@@ -53,7 +61,7 @@ export function MobileNav({ items, dir, labels }: MobileNavProps) {
           <Button variant="ghost" size="icon" className="md:hidden" aria-label={labels.open} />
         }
       >
-        <MenuIcon className="size-5" />
+        <ListIcon aria-hidden className="size-5" />
       </SheetTrigger>
       <SheetContent
         side={dir === "rtl" ? "left" : "right"}

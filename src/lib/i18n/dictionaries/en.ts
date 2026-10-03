@@ -2,7 +2,7 @@
 // No functions here: dictionaries cross the Server → Client boundary as props.
 export const en = {
   meta: {
-    title: "MO Studio — Mohammed Almutassim, full-stack developer",
+    title: "MO Studio | Mohammed Almutassim, full-stack developer",
     description:
       "Design, frontend, backend and database from one developer in Jeddah. Web apps, APIs and dashboards shipped end to end.",
   },
@@ -12,59 +12,66 @@ export const en = {
     about: "About",
     stack: "Stack",
     contact: "Contact",
-    openBadge: "Open to projects",
-    home: "MO Studio — back to top",
+    cta: "Let's talk",
+    home: "MO Studio, back to top",
     menu: "Open menu",
     menuTitle: "Navigation",
     switchLang: "Switch to Arabic",
   },
   hero: {
-    kicker: "Full-stack Developer · Jeddah",
-    lines: ["I design", "& build", "products."],
-    copy: ["Design. Frontend. Backend. Database.", "One developer. Zero hand-offs."],
+    kicker: "Full-stack developer",
+    // Second line is set in the brand colour and closed with a full stop.
+    lines: ["I design & build", "products"],
+    copy: "Design, frontend, backend and database from one developer. Zero hand-offs.",
     cta: "View my work",
-    disciplines: ["UI / UX", "Web apps", "APIs", "Dashboards"],
+    socials: "Find me on",
+    badge: "Open to new projects / MO Studio / ",
     portraitAlt: "Mohammed Almutassim",
   },
   work: {
-    rail: "My work",
-    more: ["More projects", "on GitHub"],
-    projects: [
-      { name: "Dr.Photo", kind: "Medical visual brand website" },
-      { name: "ظل الشرق", kind: "Restaurant website" },
-      { name: "Riwaq", kind: "Café website" },
-      { name: "Eshop", kind: "E-commerce website" },
-      { name: "نبض الابتكار", kind: "Innovation experience website" },
-      { name: "Trackify", kind: "Finance tracker app" },
-      { name: "Kobon VIP", kind: "Coupon platform website" },
-    ],
+    rail: "Featured projects",
+    heading: "My work",
+    viewAll: "View all on GitHub",
+    prev: "Previous projects",
+    next: "Next projects",
+    repo: "Source",
+    // Keyed by slug, not ordered: project names live in projects.ts because they do not translate.
+    projects: {
+      drphoto: "Medical visual brand website",
+      "dhil-alsharq": "Restaurant website",
+      riwaq: "Café website",
+      "nabd-alibtikar": "Innovation experience website",
+      trackify: "Finance tracker app",
+      kobonvip: "Coupon platform website",
+    },
   },
   services: {
-    rail: "What I do",
+    heading: "What I do",
     items: [
       {
         title: "UI / UX design",
-        body: "Screens and flows designed before code — wireframes, layout and a visual system.",
+        body: "I design screens and user flows before writing code, so your product feels clear from the first release",
       },
       {
         title: "Web applications",
-        body: "React / Next.js apps with routing, state, auth and analytics wired end to end.",
+        body: "I build fast, well-structured apps with React and Next.js, including authentication, state management, and analytics",
       },
       {
-        title: "APIs & backends",
-        body: "Typed REST APIs on Node and Express with Prisma and JWT authentication.",
+        title: "Backend services",
+        body: "I develop secure REST APIs with Node, Express, Prisma, and PostgreSQL, built for the product you'll have in two years, not just today",
       },
       {
         title: "Dashboards & admin",
-        body: "Data-dense CRUD tools, charts and role-based access your team runs on.",
+        body: "I turn your data into clear admin dashboards with charts, and give each user only the access they need",
       },
       {
-        title: "Database design",
-        body: "PostgreSQL schemas and migrations planned for the product you will have in two years.",
+        title: "Business systems",
+        body: "I create custom CMS and CRM systems around how you work, so you manage content and customers from one place",
       },
     ],
   },
   stats: {
+    heading: "By the numbers",
     labels: [
       ["Years building", "for the web"],
       ["Products &", "features shipped"],
@@ -73,20 +80,19 @@ export const en = {
     ],
   },
   about: {
-    rail: "My approach",
-    heading: ["Good code", "is clear thinking", "made"],
-    highlight: "visible.",
-    p1: "I'm Mohammed Almutassim Gallab. Through MO Studio I take your idea all the way to a live product — the screens your customers use, the logic behind them, and the database that keeps everything safe.",
-    p2: "One person on both sides means nothing gets lost between designer and developer: fewer meetings, faster launches, and a product that keeps growing after handover.",
-    photoAlt: "Mohammed Almutassim at work",
+    // The highlight closes the heading in the brand colour.
+    heading: "What you see on screen starts with what you",
+    highlight: "don't",
+    p1: "I'm Mohammed Almutassim Gallab. Through MO Studio, I take your idea to a product that actually works: the screens your customers use, the logic behind them, and the database that keeps everything safe.",
+    p2: "When one person is both designer and developer, nothing gets lost between the two: fewer meetings, faster launches, and a product that keeps growing with you after handoff",
+    points: ["Design before code", "One owner, no hand-offs", "Secure by default", "Built to grow with you"],
   },
   stack: {
-    rail: "Stack",
+    heading: "Stack",
   },
   contact: {
     rail: "Let's connect",
     heading: ["Have a project", "in mind?"],
-    highlight: "Let's talk.",
     intro:
       "I'm currently open to new projects and collaborations. Tell me what you're building and I'll reply within 24 hours.",
     fields: { name: "Your name", email: "Email address", message: "About the project" },
@@ -94,7 +100,7 @@ export const en = {
     sending: "Sending…",
     sent: ["Message", "received."],
     sendAnother: "Send another",
-    thanks: "Thanks {name} — I reply within 24 hours.",
+    thanks: "Thanks {name}. I reply within 24 hours.",
     thanksFallback: "there",
     errors: {
       name: "Please enter your name.",
@@ -102,14 +108,24 @@ export const en = {
       message: "A few words about the project (10+ characters).",
       generic: "The message could not be sent. Please try again.",
     },
-    location: "Jeddah, Saudi Arabia · GMT+3",
+    location: "Jeddah, Saudi Arabia",
+    info: {
+      email: "Email",
+      whatsapp: "WhatsApp",
+      location: "Location",
+      response: "Response time",
+      responseValue: "Within 24 hours",
+    },
   },
   footer: {
     copyright: "© 2026 MO Studio",
-    mid: "Full-stack portfolio",
+    blurb: "Design, frontend, backend and database from one developer in Jeddah.",
+    navTitle: "Navigation",
+    connectTitle: "Connect",
+    langTitle: "Language",
     backTop: "Back to top",
   },
-  arrows: { forward: "→", diag: "↗", up: "↑" },
+  arrows: { forward: "→" },
 };
 
 export type Dictionary = typeof en;

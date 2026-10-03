@@ -1,0 +1,77 @@
+"use client";
+
+import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
+import { useRef, type ReactNode } from "react";
+import { usePinnedTrack } from "@/features/work/hooks/use-pinned-track";
+import { MOTION_REDUCE } from "@/lib/gsap";
+
+type WorkCarouselProps = {
+  header: ReactNode;
+  action: ReactNode;
+  labels: { prev: string; next: string };
+  children: ReactNode;
+};
+
+const buttonClass =
+  "grid size-12 place-items-center border border-ink/35 text-ink transition-colors duration-300 hover:border-brand hover:text-brand active:scale-[0.98]";
+
+/**
+ * On desktop the section pins and vertical scroll drives the track sideways (see usePinnedTrack).
+ * Everywhere else it's a native scroll-snap track, so touch, trackpad and keyboard scrolling all
+ * work without JS. The buttons step it by one card either way.
+ */
+export function WorkCarousel({ header, action, labels, children }: WorkCarouselProps) {
+  const track = useRef<HTMLUListElement>(null);
+  const pinned = usePinnedTrack(track);
+
+  // "Forward" follows reading order: in RTL the track scrolls toward negative scrollLeft.
+  const step = (forward: boolean) => {
+    if (pinned.pinned()) return pinned.step(forward);
+    const element = track.current;
+    const card = element?.firstElementChild;
+    if (!element || !card) return;
+    const rtl = getComputedStyle(element).direction === "rtl";
+    const distance = card.getBoundingClientRect().width + 24;
+    element.scrollBy({
+      left: (forward !== rtl ? 1 : -1) * distance,
+      behavior: window.matchMedia(MOTION_REDUCE).matches ? "auto" : "smooth",
+    });
+  };
+
+  return (
+    <>
+      <div className="mb-12 flex flex-wrap items-end justify-between gap-6 in-data-pinned:mb-7 max-sm:in-data-pinned:mb-5">
+        {header}
+        {/* flex-wrap because the link plus two 48px buttons needs ~346px against a 327px column at
+            375px, so the next button was being eaten by the section's overflow-clip. Pinned on a
+            phone the whole group goes: page scroll is the horizontal control there, and this same
+            GitHub link already sits in the hero and the footer. */}
+        <div className="flex flex-wrap items-center gap-3 max-sm:in-data-pinned:hidden">
+          {action}
+          {/* Held together so wrapping can never split prev from next. */}
+          <div className="flex items-center gap-3">
+            <button type="button" aria-label={labels.prev} onClick={() => step(false)} className={buttonClass}>
+              <CaretLeftIcon aria-hidden weight="bold" className="size-4 rtl:-scale-x-100" />
+            </button>
+            <button type="button" aria-label={labels.next} onClick={() => step(true)} className={buttonClass}>
+              <CaretRightIcon aria-hidden weight="bold" className="size-4 rtl:-scale-x-100" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Cards reveal from their vertical section trigger, not horizontal clipping, so the pinned
+          track never leaves cards blank while it moves sideways. */}
+      <ul
+        ref={track}
+        // Horizontal swipes on the track stay native so scroll-snap keeps working under Lenis.
+        data-lenis-prevent-horizontal
+        onFocus={(event) => {
+          if (pinned.pinned()) pinned.reveal(event.target.closest("li") ?? event.target);
+        }}
+        className="grid snap-x snap-mandatory auto-cols-[85%] grid-flow-col gap-6 overflow-x-auto overscroll-x-contain pb-6 [scrollbar-color:var(--brand)_transparent] [scrollbar-width:thin] data-pinned:snap-none data-pinned:overflow-visible max-sm:data-pinned:pb-0 max-sm:data-pinned:auto-cols-[clamp(252px,calc((100svh-330px)*0.8),82%)] max-sm:data-pinned:[touch-action:pan-y_pinch-zoom] sm:auto-cols-[calc((100%-24px)/2)] lg:auto-cols-[calc((100%-48px)/3)] lg:data-pinned:auto-cols-[clamp(260px,calc((100svh-470px)*0.8),calc((100%-48px)/3))]"
+      >
+        {children}
+      </ul>
+    </>
+  );
+}

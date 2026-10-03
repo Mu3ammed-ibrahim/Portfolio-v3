@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { ActionLink } from "@/components/ActionLink";
+import { HeaderSurface } from "@/features/site-shell/components/HeaderSurface";
 import { LangToggle } from "@/features/site-shell/components/LangToggle";
 import { MobileNav } from "@/features/site-shell/components/MobileNav";
 import { NavLinks } from "@/features/site-shell/components/NavLinks";
@@ -15,10 +17,10 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
   return (
     <>
       <ScrollProgress />
-      <header className="sticky top-0 z-20 bg-ground/85 backdrop-blur-[10px]">
+      <HeaderSurface>
         <nav className="wrap flex h-16 items-center justify-between gap-6">
           <a href="#top" className="flex items-center gap-2.5" aria-label={t.nav.home}>
-            <Image src="/logo.png" alt="" width={51} height={34} priority className="h-[34px] w-auto" />
+            <Image src="/logo.png" alt="" width={51} height={34} preload className="h-[34px] w-auto" />
             <span className="disp text-lg tracking-[.06em]" aria-hidden>
               M<span className="text-brand">·</span>O
             </span>
@@ -26,12 +28,11 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
           <div className="flex items-center gap-4 md:gap-[26px]">
             <NavLinks items={items} className="hidden md:flex" />
             <LangToggle locale={locale} switchLabel={t.nav.switchLang} />
-            <span
-              role="img"
-              aria-label={t.nav.openBadge}
-              title={t.nav.openBadge}
-              className="inline-block size-[9px] animate-pulse-dot rounded-full bg-brand"
-            />
+            <div className="hidden lg:block">
+              <ActionLink href="#contact" size="sm">
+                {t.nav.cta}
+              </ActionLink>
+            </div>
             <MobileNav
               items={items}
               dir={dirOf(locale)}
@@ -39,7 +40,7 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
             />
           </div>
         </nav>
-      </header>
+      </HeaderSurface>
     </>
   );
 }

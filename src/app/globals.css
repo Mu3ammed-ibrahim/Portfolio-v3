@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,6 +20,10 @@
   --brand-soft: #ff9783;
   --divider: color-mix(in srgb, var(--ink) 16%, transparent);
   --ink-muted: color-mix(in srgb, var(--ink) 62%, transparent);
+  /* Raised band tone: the reference's light bands, kept inside the dark theme */
+  --lift: color-mix(in srgb, var(--ink) 6%, var(--ground));
+  /* Rise of every diagonal band edge */
+  --cut: clamp(28px, 5vw, 84px);
 
   /* next/font injects --font-archivo / --font-kufi / --font-plex-arabic on <html> */
   --font-heading: var(--font-archivo), system-ui, sans-serif;
@@ -54,6 +59,7 @@
 @theme inline {
   --color-ground: var(--ground);
   --color-surface: var(--surface);
+  --color-lift: var(--lift);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-brand: var(--brand);
@@ -95,18 +101,12 @@
 
   --ease-out-expo: cubic-bezier(0.2, 0.7, 0.2, 1);
 
-  --animate-pulse-dot: pulse-dot 2s infinite;
   --animate-shake: shake 0.4s;
   --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  --animate-rotate-18: rotate 18s linear infinite;
   --animate-rotate-20: rotate 20s linear infinite;
 
   @keyframes rotate {
     to { transform: rotate(360deg); }
-  }
-  @keyframes pulse-dot {
-    0%, 100% { box-shadow: 0 0 0 0 rgb(236 48 19 / 0.6); }
-    70% { box-shadow: 0 0 0 8px rgb(236 48 19 / 0); }
   }
   @keyframes shake {
     0%, 100% { transform: none; }
@@ -125,10 +125,25 @@
   }
   html {
     @apply font-sans;
+    /* Anchor targets land below the 64px sticky header */
+    scroll-padding-top: 72px;
+  }
+  /* Fallback glide for when Lenis isn't running (JS off or not yet hydrated); Lenis owns it otherwise */
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.lenis) {
+      scroll-behavior: smooth;
+    }
   }
   body {
     @apply bg-ground text-ink antialiased;
   }
+}
+
+/* The intro overlay holds the page still until it starts to leave. Keeping the scrollbar's gutter
+   means nothing reflows when scrolling comes back, so ScrollTrigger's measurements stay valid. */
+html:has(#intro[data-intro="play"]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
 }
 
 /* Unlayered on purpose: shadcn's base layer sets its own focus outline and would win inside @layer */
@@ -191,12 +206,42 @@
   }
 }
 
-/* Arabic display type has no condensed axis and no case; it needs more leading */
-[dir="rtl"] .disp {
+/* Arabic display type has no condensed axis and no case; it needs more leading.
+   Scoped by :lang, not [dir], so an Arabic project name is set correctly on the English page too.
+   Same (0,2,0) specificity as the [dir="rtl"] rule it replaces, and it inherits from <html lang>,
+   so whole-page Arabic behaves exactly as before. */
+.disp:lang(ar) {
+  font-family: var(--font-kufi), var(--font-archivo), sans-serif;
   font-stretch: 100%;
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.25;
+}
+/* --font-heading is redefined on [dir="rtl"] and custom properties inherit, so a Latin name inside
+   the Arabic page would otherwise resolve to Kufi. font-family is the only property that needs
+   pinning: these rules are unlayered and would beat the leading/width utilities the other sections
+   rely on. On /en it resolves to the same stack .disp already had. */
+.disp:lang(en) {
+  font-family: var(--font-latin);
+}
+/* SplitText line masks clip at the line box, and .disp's 0.9 leading would crop cap tops and
+   descenders. Same headroom trick as the hero's clip spans: pad the mask, pull the layout back.
+   The masks are stacked blocks whose vertical margins collapse, so all of a line's pull-back sits
+   on its end margin, and the first and last lines only undo their own outer padding. */
+.split-line-mask {
+  --mask-top: 0.08em;
+  --mask-bottom: 0.08em;
+  padding-block: var(--mask-top) var(--mask-bottom);
+  margin-block-end: calc(-1 * (var(--mask-top) + var(--mask-bottom)));
+}
+.split-line-mask:first-child {
+  margin-block-start: calc(-1 * var(--mask-top));
+}
+.split-line-mask:last-child {
+  margin-block-end: calc(-1 * var(--mask-bottom));
+}
+.split-line-mask:lang(ar) {
+  --mask-bottom: 0.22em;
 }
 [dir="rtl"] .rail {
   font-stretch: 100%;
@@ -207,4 +252,151 @@
 [dir="rtl"] .meta {
   letter-spacing: 0.02em;
   text-transform: none;
+}
+
+/*
+ * Diagonal band edges. clip-path has no logical form, so each shape is mirrored under RTL
+ * to keep the high side of the slope at the reading end.
+ */
+@utility cut-both {
+  clip-path: polygon(0 var(--cut), 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% var(--cut), 100% 100%, 0 calc(100% - var(--cut)));
+  }
+}
+@utility cut-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - var(--cut)));
+  }
+}
+
+/* Right-angle wedge whose square corner sits at the bottom inline-start */
+@utility wedge-start {
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+}
+@utility wedge-end {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+  }
+}
+
+/*
+ * Hero beams. Both stay invisible until HeroIntro marks its scope [data-hero-ready], so they start
+ * after the entrance instead of competing with it, and both drop out under reduced motion.
+ */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+/* Mask position runs 110% → -10% so the band enters and leaves fully off the text */
+@keyframes beam-glint {
+  0% { mask-position: 110% 0; }
+  45%, 100% { mask-position: -10% 0; }
+}
+
+/* A light running around the border: a conic sweep masked down to a 2px ring (::before), plus a
+   blurred copy masked to a wider ring outside it for the halo (::after). Filters run before masks,
+   so the blur has to live on its own layer to survive. The brand-soft tip keeps the beam visible
+   on the solid brand button. */
+@utility beam-edge {
+  position: relative;
+  /* The gradient is written on the pseudo-elements themselves: that is where --beam-angle animates.
+     Declared on the host, var() would resolve against the host's static 0deg and inherit frozen. */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0 68%,
+      var(--brand) 88%,
+      var(--brand-soft) 97%,
+      transparent 99%
+    );
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+  &::before {
+    inset: -1px;
+    padding: 2px;
+  }
+  &::after {
+    inset: -10px;
+    padding: 10px;
+    filter: blur(6px);
+  }
+  &:where([data-hero-ready] *)::before,
+  &:where([data-hero-ready] *)::after {
+    animation: beam-spin 3.2s linear infinite;
+  }
+  &:where([data-hero-ready] *)::before {
+    opacity: 1;
+  }
+  &:where([data-hero-ready] *)::after {
+    opacity: 0.75;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+/* A glint sweeping along the letter outlines: an outlined copy of the text (from data-text, kept out
+   of the accessibility tree by the empty alt) shown through a narrow moving mask band. */
+@utility beam-text {
+  position: relative;
+  &::after {
+    content: attr(data-text) / "";
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--beam-color, var(--brand));
+    filter: drop-shadow(0 0 6px var(--beam-color, var(--brand)));
+    mask-image: linear-gradient(100deg, transparent 44%, #000 50%, transparent 56%);
+    mask-size: 300% 100%;
+    mask-repeat: no-repeat;
+    mask-position: 110% 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+  &:where([data-hero-ready] *)::after {
+    opacity: 1;
+    animation: beam-glint 4.5s ease-in-out infinite;
+  }
+  /* Sweep with the reading direction */
+  &:where([dir="rtl"] *)::after {
+    animation-direction: reverse;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      display: none;
+    }
+  }
+}
+
+/* Dot-grid texture for decorative layers */
+@utility dots {
+  background-image: radial-gradient(var(--divider) 1.2px, transparent 1.6px);
+  background-size: 16px 16px;
+}
+
+/* Panel whose inline-end edge leans in by a fixed amount, whatever the panel's width */
+@utility slant-end {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 96px) 100%, 0 100%);
+  &:where([dir="rtl"] *) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 96px 100%);
+  }
 }

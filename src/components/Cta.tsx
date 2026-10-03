@@ -28,7 +28,7 @@ function CtaBody({ label, arrow, lineClassName }: CtaBodyProps) {
 
 type CtaLinkProps = CtaBodyProps & { href: string; className?: string };
 
-/** In-page anchor CTA; Lenis handles the smooth scroll for hash links. */
+/** In-page anchor CTA; the CSS scroll-behavior on <html> glides hash links. */
 export function CtaLink({ href, className, ...body }: CtaLinkProps) {
   return (
     <a href={href} className={cn(ctaClass, className)}>
