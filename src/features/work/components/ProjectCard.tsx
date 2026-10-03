@@ -8,15 +8,13 @@ type ProjectCardProps = {
   kind: string;
   repoLabel: string;
   locale: Locale;
-  /** First cards in the track: load now instead of popping in as the pan slides them on screen. */
-  eager?: boolean;
 };
 
 /**
  * The card has two destinations, so it cannot be one <a> around everything. The name is the live
  * link and stretches over the whole card via ::after; the repo link is lifted above that overlay.
  */
-export function ProjectCard({ project, kind, repoLabel, locale, eager }: ProjectCardProps) {
+export function ProjectCard({ project, kind, repoLabel, locale }: ProjectCardProps) {
   const [primary, secondary] = nameLines(project.name, locale);
 
   return (
@@ -28,7 +26,6 @@ export function ProjectCard({ project, kind, repoLabel, locale, eager }: Project
           src={project.image}
           alt={primary.text}
           fill
-          loading={eager ? "eager" : undefined}
           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 80vw"
           className="object-cover transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03]"
         />
