@@ -6,7 +6,11 @@ const nextConfig: NextConfig = {
   // Lets app/global-not-found.tsx serve 404s; the locale layout under [locale] cannot compose one.
   experimental: { globalNotFound: true },
   async redirects() {
-    return [{ source: "/", destination: "/en", permanent: false }];
+    return [
+      { source: "/", destination: "/en", permanent: false },
+      // Pages link the SVG icon, but some crawlers and older clients still request /favicon.ico blind.
+      { source: "/favicon.ico", destination: "/icon.svg", permanent: true },
+    ];
   },
 };
 

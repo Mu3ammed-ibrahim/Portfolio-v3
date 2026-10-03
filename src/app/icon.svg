@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0f0e0e"/>
+  <!-- Geometry mirrors src/lib/brand/logo-geometry.ts -->
+  <svg x="8" y="7" width="48" height="50" viewBox="500 60 535 825">
+    <defs>
+      <linearGradient id="fade" gradientUnits="userSpaceOnUse" x1="835" y1="558" x2="976" y2="695">
+        <stop offset="0" stop-color="#f3f2f2"/>
+        <stop offset="0.22" stop-color="#ec3013"/>
+      </linearGradient>
+    </defs>
+    <polygon fill="#f3f2f2" points="509,70 766,306 1026,70 1026,618 971,564 971,200 766,382 564,200 564,689 509,636"/>
+    <polygon fill="#f3f2f2" points="637,332 854,536 815,580 692,464 692,557 873,727 873,773 763,875 637,757 637,677 763,801 813,755 637,586"/>
+    <polygon fill="#ec3013" points="904,327 809,414 904,505"/>
+    <polygon fill="url(#fade)" points="854,536 999,674 954,716 815,580"/>
+  </svg>
+</svg>
