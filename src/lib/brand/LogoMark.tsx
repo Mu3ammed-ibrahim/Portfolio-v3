@@ -1,20 +1,22 @@
 import { logoFade, logoShapes, logoViewBoxAttr } from "@/lib/brand/logo-geometry";
 
-type LogoMarkProps = { className?: string };
+// The gradient is referenced by id, so each copy on a page needs its own.
+type LogoMarkProps = { className?: string; gradientId?: string };
 
 // vector-effect doesn't inherit, so each shape carries it: the outline stays 2 screen px at any size.
 const part = { "data-logo-part": "", vectorEffect: "non-scaling-stroke" } as const;
 
 /**
- * The MO mark as live vector paths, so the intro can draw the outline stroke by stroke. Every shape
- * is a data-logo-part; its stroke starts invisible, so the static mark renders as solid fills.
+ * The MO mark as live vector paths: the header and footer logo, and the intro draws its outline
+ * stroke by stroke. Every shape is a data-logo-part; its stroke starts invisible, so the static mark
+ * renders as solid fills.
  */
-export function LogoMark({ className }: LogoMarkProps) {
+export function LogoMark({ className, gradientId = "logo-mark-fade" }: LogoMarkProps) {
   return (
     <svg viewBox={logoViewBoxAttr} className={className} aria-hidden focusable="false">
       <defs>
         <linearGradient
-          id="logo-mark-fade"
+          id={gradientId}
           gradientUnits="userSpaceOnUse"
           x1={logoFade.x1}
           y1={logoFade.y1}
@@ -29,7 +31,7 @@ export function LogoMark({ className }: LogoMarkProps) {
         <polygon {...part} className="fill-ink stroke-ink" points={logoShapes.m} />
         <polygon {...part} className="fill-ink stroke-ink" points={logoShapes.s} />
         <polygon {...part} className="fill-brand stroke-brand" points={logoShapes.wedge} />
-        <polygon {...part} fill="url(#logo-mark-fade)" stroke="url(#logo-mark-fade)" points={logoShapes.bar} />
+        <polygon {...part} fill={`url(#${gradientId})`} stroke={`url(#${gradientId})`} points={logoShapes.bar} />
       </g>
     </svg>
   );

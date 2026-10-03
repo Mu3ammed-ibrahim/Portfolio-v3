@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { InlineScript } from "@/features/intro/components/InlineScript";
-import { LogoMark } from "@/features/intro/components/LogoMark";
+import { LogoMark } from "@/lib/brand/LogoMark";
 import { EASE_OUT, MOTION_OK, SplitText, gsap, useGSAP } from "@/lib/gsap";
 import { INTRO_DONE_EVENT, INTRO_ID } from "@/lib/intro-gate";
 

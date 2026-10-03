@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ActionLink } from "@/components/ActionLink";
 import { HeaderSurface } from "@/features/site-shell/components/HeaderSurface";
 import { LangToggle } from "@/features/site-shell/components/LangToggle";
@@ -6,6 +5,7 @@ import { MobileNav } from "@/features/site-shell/components/MobileNav";
 import { NavLinks } from "@/features/site-shell/components/NavLinks";
 import { ScrollProgress } from "@/features/site-shell/components/ScrollProgress";
 import { getNavItems } from "@/features/site-shell/lib/nav-items";
+import { LogoMark } from "@/lib/brand/LogoMark";
 import { dirOf, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -20,7 +20,8 @@ export function SiteHeader({ t, locale }: SiteHeaderProps) {
       <HeaderSurface>
         <nav className="wrap flex h-16 items-center justify-between gap-6">
           <a href="#top" className="flex items-center gap-2.5" aria-label={t.nav.home}>
-            <Image src="/logo.png" alt="" width={51} height={34} preload className="h-[34px] w-auto" />
+            {/* The 51×34 box the old PNG took, with the mark at the ~27px height it had inside it */}
+            <LogoMark gradientId="header-logo-fade" className="h-[27px] w-[51px]" />
             <span className="disp text-lg tracking-[.06em]" aria-hidden>
               M<span className="text-brand">·</span>O
             </span>

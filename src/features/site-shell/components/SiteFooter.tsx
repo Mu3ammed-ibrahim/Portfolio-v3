@@ -4,10 +4,10 @@ import {
   GithubLogoIcon,
   LinkedinLogoIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { LangToggle } from "@/features/site-shell/components/LangToggle";
 import { getNavItems } from "@/features/site-shell/lib/nav-items";
+import { LogoMark } from "@/lib/brand/LogoMark";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import { site } from "@/lib/site";
@@ -28,7 +28,7 @@ export function SiteFooter({ t, locale }: SiteFooterProps) {
       <div className="wrap grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-10">
         <div>
           <a href="#top" aria-label={t.nav.home} className="mb-5 flex w-fit items-center gap-2.5">
-            <Image src="/logo.png" alt="" width={51} height={34} className="h-[34px] w-auto" />
+            <LogoMark gradientId="footer-logo-fade" className="h-[27px] w-[51px]" />
             <span className="disp text-lg tracking-[.06em]" aria-hidden>
               M<span className="text-brand">·</span>O
             </span>
