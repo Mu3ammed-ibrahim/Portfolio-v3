@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import Link from "next/link";
+import { brandHex } from "@/lib/brand/brand-hex";
 import { defaultLocale } from "@/lib/i18n/config";
+import { siteUrl } from "@/lib/site-url";
 import "@/app/globals.css";
 
 const archivo = Archivo({
@@ -12,8 +14,14 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
   title: "Page not found | MO Studio",
   description: "That page does not exist.",
+};
+
+export const viewport: Viewport = {
+  themeColor: brandHex.ground,
+  colorScheme: "dark",
 };
 
 // The locale layout cannot host a 404 because it sits under a dynamic segment,

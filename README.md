@@ -20,6 +20,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Once a custom domain exists | Absolute origin for share previews (`og:image`), `sitemap.xml` and `robots.txt`, e.g. `https://mostudio.dev`. |
+
+Until it's set, the site falls back to Vercel's `VERCEL_PROJECT_PRODUCTION_URL` (keep "Automatically expose System Environment Variables" on in the Vercel project), then to `http://localhost:3000`. The URL is baked in at build time, so redeploy after changing it.
+
+After a production deploy, check the share preview with [opengraph.xyz](https://www.opengraph.xyz), [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) and the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/). The last two also refresh cached previews.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
