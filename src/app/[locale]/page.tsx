@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { AboutSection } from "@/features/about/components/AboutSection";
 import { ContactSection } from "@/features/contact/components/ContactSection";
+import { FaqSection } from "@/features/faq/components/FaqSection";
 import { Hero } from "@/features/hero/components/Hero";
 import { ServicesSection } from "@/features/services/components/ServicesSection";
 import { SiteFooter } from "@/features/site-shell/components/SiteFooter";
@@ -26,6 +27,7 @@ export default async function PortfolioPage({ params }: PageProps<"/[locale]">) 
         <StackSection t={t} />
         <WorkSection t={t} locale={locale} />
         <StatsSection t={t} />
+        <FaqSection t={t} />
         <ContactSection t={t} />
       </main>
       <SiteFooter t={t} locale={locale} />
