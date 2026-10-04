@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { EASE_OUT, MOTION_OK, REVEAL_START, gsap, useGSAP } from "@/lib/gsap";
+import { onIdle } from "@/lib/idle";
 import { scrubWords, splitReveal } from "@/lib/text-motion";
 
 /**
@@ -41,16 +42,6 @@ export function useReveal<T extends HTMLElement>() {
   );
 
   return scope;
-}
-
-// Safari has no requestIdleCallback; a zero timeout still yields to the browser between sections.
-function onIdle(callback: () => void) {
-  if ("requestIdleCallback" in window) {
-    const id = requestIdleCallback(callback, { timeout: 1000 });
-    return () => cancelIdleCallback(id);
-  }
-  const id = setTimeout(callback, 0);
-  return () => clearTimeout(id);
 }
 
 function buildReveals(root: HTMLElement) {

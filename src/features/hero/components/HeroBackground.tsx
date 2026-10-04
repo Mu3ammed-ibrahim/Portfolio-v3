@@ -3,6 +3,7 @@
 import { getImageProps } from "next/image";
 import { useRef } from "react";
 import { EASE_OUT, MOTION_OK, gsap, useGSAP } from "@/lib/gsap";
+import { onIdle } from "@/lib/idle";
 
 type HeroBackgroundProps = { alt: string };
 
@@ -21,36 +22,45 @@ export function HeroBackground({ alt }: HeroBackgroundProps) {
     const hero = scope.current?.closest<HTMLElement>("section");
     const atmosphere = scope.current?.querySelector<HTMLElement>("[data-hero-atmosphere]");
 
-    gsap.matchMedia().add(MOTION_OK, () => {
+    gsap.matchMedia().add(MOTION_OK, (context) => {
+      // Stays immediate: this one is visible the moment the hero paints, so deferring it would show
+      // the layer parked at scale(1.06) and then lurch.
       gsap.to(layer.current, { scale: 1, duration: 1.8, ease: EASE_OUT });
 
-      // The image lags behind the hero section as it leaves the viewport, creating depth without
-      // tying the effect to one fixed viewport height.
-      gsap.to(layer.current, {
-        yPercent: 12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+      // The parallax below only matters once the hero starts leaving, but measuring its trigger
+      // costs a layout pass, and useGSAP runs inside hydration's layout effect — before first paint.
+      // An idle slot moves that off the critical path; context.add keeps the late tweens revertible.
+      return onIdle(() =>
+        context.add(() => {
+          // The image lags behind the hero section as it leaves the viewport, creating depth without
+          // tying the effect to one fixed viewport height.
+          gsap.to(layer.current, {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: hero,
+              start: "top top",
+              end: "bottom top",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
 
-      if (atmosphere) {
-        gsap.to(atmosphere, {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: hero,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.2,
-            invalidateOnRefresh: true,
-          },
-        });
-      }
+          if (atmosphere) {
+            gsap.to(atmosphere, {
+              yPercent: 8,
+              ease: "none",
+              scrollTrigger: {
+                trigger: hero,
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.2,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+        }),
+      );
     });
   }, { scope });
 
