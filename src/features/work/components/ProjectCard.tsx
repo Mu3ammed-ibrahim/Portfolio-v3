@@ -22,11 +22,19 @@ export function ProjectCard({ project, kind, repoLabel, locale }: ProjectCardPro
       className="group/card relative flex h-full flex-col border border-divider bg-surface text-ink transition-colors duration-500 ease-out-expo hover:border-brand/60 focus-within:border-brand"
     >
       <div className="relative aspect-[4/5] overflow-hidden">
+        {/*
+          A fixed 384px on lg, not a vw: while the track is pinned the card is height-driven
+          (WorkCarousel's clamp(260px, (100svh-470px)*0.8, (100%-48px)/3)), so it lands between
+          260 and 405px and never reaches the 30vw this used to claim. 384 is the srcset rung
+          directly below 640 — declaring the honest 405px would still fetch 640 and save nothing.
+          The other arms keep their vw inside calc() so Next finds no bare NNvw token to floor the
+          candidate list with, which is what keeps 384 in the ladder at all.
+        */}
         <Image
           src={project.image}
           alt={primary.text}
           fill
-          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 80vw"
+          sizes="(min-width: 1024px) 384px, (min-width: 768px) calc(50vw - 60px), (min-width: 640px) calc(50vw - 36px), calc(85vw - 41px)"
           className="object-cover transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03]"
         />
       </div>
