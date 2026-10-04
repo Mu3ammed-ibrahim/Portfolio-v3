@@ -8,7 +8,18 @@ type FaqItemProps = { index: number; question: string; answer: string };
 // Opening an answer pushes Contact down, and ScrollTrigger doesn't notice on its own: without the
 // refresh, Contact's reveals fire hundreds of pixels early. No height animation, so one refresh
 // after the toggle measures the final layout.
-const remeasure = () => ScrollTrigger.refresh();
+//
+// One refresh re-measures every trigger on the page and re-runs each invalidateOnRefresh callback,
+// including the Work pin's width reads. Coalescing into a single frame means opening three answers
+// costs one pass rather than three. Module-level on purpose: the burst spans sibling items.
+let pendingRefresh = 0;
+const remeasure = () => {
+  if (pendingRefresh) return;
+  pendingRefresh = requestAnimationFrame(() => {
+    pendingRefresh = 0;
+    ScrollTrigger.refresh();
+  });
+};
 
 // Native <details>: keyboard, screen readers and find-in-page work without extra code.
 export function FaqItem({ index, question, answer }: FaqItemProps) {
