@@ -3,8 +3,16 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // A stray lockfile in the user's home folder otherwise makes Turbopack guess the wrong root.
   turbopack: { root: __dirname },
-  // Lets app/global-not-found.tsx serve 404s; the locale layout under [locale] cannot compose one.
-  experimental: { globalNotFound: true },
+  experimental: {
+    // Lets app/global-not-found.tsx serve 404s; the locale layout under [locale] cannot compose one.
+    globalNotFound: true,
+    // Both Phosphor entry points are barrels of re-exports (190 KB and 184 KB). Next optimises
+    // lucide-react and the heroicons subpaths by default, but not these. Two specifiers because an
+    // entry matches the import specifier exactly, the way Next's own defaults list
+    // "@heroicons/react/20/solid" rather than "@heroicons/react" — ten of the fourteen icon imports
+    // here come from /dist/ssr, which the bare package name would not cover.
+    optimizePackageImports: ["@phosphor-icons/react", "@phosphor-icons/react/dist/ssr"],
+  },
   images: {
     // AVIF first, webp for everything that can't take it. Costs ~50% more encode time on the first
     // request per variant, which the long TTL below then amortises.
