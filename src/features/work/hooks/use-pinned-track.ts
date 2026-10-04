@@ -53,10 +53,13 @@ export function usePinnedTrack(track: RefObject<HTMLUListElement | null>) {
 
     // One pin, two gates. Returns the cleanup matchMedia runs when its arm stops matching.
     const pin = (scrub: number) => {
+      // Read before writing. direction comes from <html dir> and the pinned flags cannot change it,
+      // but asking for it after them would force a synchronous layout to flush the invalidation
+      // those two writes just made.
+      const sign = getComputedStyle(element).direction === "rtl" ? 1 : -1;
       // Set before measuring: the flags switch the track to overflow-visible and trim the padding.
       element.dataset.pinned = "";
       section.dataset.pinned = "";
-      const sign = getComputedStyle(element).direction === "rtl" ? 1 : -1;
       const distance = () => element.scrollWidth - element.clientWidth;
 
       const tween = gsap.to(element, {
