@@ -22,11 +22,18 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Environment
 
+Copy `.env.example` to `.env` and fill it in.
+
 | Variable | Required | Purpose |
 | --- | --- | --- |
+| `RESEND_API_KEY` | Yes, for the contact form | [Resend](https://resend.com/api-keys) key used by the contact form's Server Action to email submissions. |
 | `NEXT_PUBLIC_SITE_URL` | Once a custom domain exists | Absolute origin for share previews (`og:image`), `sitemap.xml` and `robots.txt`, e.g. `https://mostudio.dev`. |
 
-Until it's set, the site falls back to Vercel's `VERCEL_PROJECT_PRODUCTION_URL` (keep "Automatically expose System Environment Variables" on in the Vercel project), then to `http://localhost:3000`. The URL is baked in at build time, so redeploy after changing it.
+Set `RESEND_API_KEY` in the Vercel project too — without it, production submissions fail into the form's delivery error while local development keeps working.
+
+The form sends from the shared `onboarding@resend.dev` sender, which needs no verified domain but may **only** deliver to the Resend account's own address. That recipient is `site.email` in `src/lib/site.ts`; any other value returns a 403. Verifying a domain is only necessary to send mail *to* visitors (an auto-reply), which the form does not do — it sets `reply_to` to the visitor instead.
+
+Until `NEXT_PUBLIC_SITE_URL` is set, the site falls back to Vercel's `VERCEL_PROJECT_PRODUCTION_URL` (keep "Automatically expose System Environment Variables" on in the Vercel project), then to `http://localhost:3000`. The URL is baked in at build time, so redeploy after changing it.
 
 After a production deploy, check the share preview with [opengraph.xyz](https://www.opengraph.xyz), [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) and the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/). The last two also refresh cached previews.
 

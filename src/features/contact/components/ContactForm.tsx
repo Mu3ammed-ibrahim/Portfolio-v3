@@ -94,6 +94,19 @@ function InquiryForm({ t, arrow, onReset }: InquiryFormProps) {
           />
         </ContactField>
       </div>
+      {/* Honeypot: clipped off-screen and out of the a11y tree, so only bots fill it.
+          The name must stay non-semantic — Chrome autofills names it recognises (e.g.
+          "company") even when hidden, which would drop a real visitor's message. */}
+      <input
+        type="text"
+        name="hp_check"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        data-1p-ignore
+        data-lpignore="true"
+        className="sr-only"
+      />
       {hasError && state.reason === "delivery" ? (
         <p role="alert" className="mb-4 text-[12px] text-brand-soft">
           {t.errors.generic}
