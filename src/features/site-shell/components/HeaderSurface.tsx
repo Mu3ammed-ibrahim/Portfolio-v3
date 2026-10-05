@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { onIdle } from "@/lib/idle";
 
 type HeaderSurfaceProps = { children: ReactNode };
 
@@ -15,9 +16,17 @@ const SOLID_AFTER = 24;
 export function HeaderSurface({ children }: HeaderSurfaceProps) {
   const [solid, setSolid] = useState(false);
 
-  useGSAP(() => {
-    ScrollTrigger.create({ start: SOLID_AFTER, end: "max", onToggle: (self) => setSolid(self.isActive) });
-  });
+  // Built in an idle slot to keep ScrollTrigger out of hydration's layout effect. Safe for a reload
+  // that restores scroll: a trigger's first refresh seeds its progress at 0 and then updates, so one
+  // created past its start still reports isActive. Deliberately not gated on MOTION_OK — the solid
+  // backdrop keeps nav text legible over scrolled content, which reduced motion still needs.
+  useGSAP((context) =>
+    onIdle(() =>
+      context.add(() => {
+        ScrollTrigger.create({ start: SOLID_AFTER, end: "max", onToggle: (self) => setSolid(self.isActive) });
+      }),
+    ),
+  );
 
   return (
     <header

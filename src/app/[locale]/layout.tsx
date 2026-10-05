@@ -17,17 +17,24 @@ const archivo = Archivo({
   display: "swap",
 });
 
+// Only ever drawn at 800, by .disp and .rail. Unpinned this ships the whole variable face (121KB)
+// for one weight. It stays preloaded: it sets the Arabic h1, so arriving after first paint would
+// reflow the hero, and /en needs it for the Arabic project names further down.
 const kufi = Noto_Kufi_Arabic({
   subsets: ["arabic"],
+  weight: ["800"],
   variable: "--font-kufi",
   display: "swap",
 });
 
+// Arabic body text. This layout serves both locales, so a preload would fire on /en too, where the
+// only Arabic set in it is the "ع" on the language toggle. /ar fetches it once its CSS asks.
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",
+  preload: false,
 });
 
 type LocaleParams = { params: Promise<{ locale: string }> };

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { EASE_OUT, MOTION_OK, REVEAL_START, gsap, useGSAP } from "@/lib/gsap";
+import { onIdle } from "@/lib/idle";
 import { scrubWords, splitReveal } from "@/lib/text-motion";
 
 /**
@@ -16,49 +17,70 @@ export function useReveal<T extends HTMLElement>() {
   useGSAP(
     () => {
       // matchMedia reverts these tweens and splits (restoring the markup) if reduced motion turns on.
-      gsap.matchMedia().add(MOTION_OK, () => {
-        gsap.utils.toArray<HTMLElement>("[data-scroll-transform]", scope.current).forEach((item) => {
-          const y = Number(item.dataset.scrollY);
-          const scale = Number(item.dataset.scrollScale);
-          const yAmount = Number.isFinite(y) ? y : 0;
-          const startingScale = Number.isFinite(scale) ? scale : 1;
-
-          if (yAmount === 0 && startingScale === 1) return;
-
-          gsap.fromTo(
-            item,
-            { y: yAmount, scale: startingScale },
-            {
-              y: -yAmount,
-              scale: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: item,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.8,
-                invalidateOnRefresh: true,
-              },
-            },
+      gsap.matchMedia().add(MOTION_OK, (context) => {
+        // Built in hydration, every section's splits and ScrollTrigger measurements land in one long
+        // task. Waiting for the swap fonts lets SplitText measure final line breaks once instead of
+        // re-splitting, and each section then builds in its own idle slot. context.add files the
+        // late tweens and splits under this context, so they still revert with it.
+        let cancelIdle = () => {};
+        let cancelled = false;
+        void document.fonts.ready.then(() => {
+          if (cancelled) return;
+          cancelIdle = onIdle(() =>
+            context.add(() => {
+              if (scope.current) buildReveals(scope.current);
+            }),
           );
         });
-
-        gsap.utils.toArray<HTMLElement>("[data-reveal]", scope.current).forEach((item) => {
-          gsap.from(item, {
-            opacity: 0,
-            y: 28,
-            duration: 0.9,
-            ease: EASE_OUT,
-            delay: Number(item.dataset.reveal) || 0,
-            scrollTrigger: { trigger: item, start: REVEAL_START, once: true },
-          });
-        });
-        gsap.utils.toArray<HTMLElement>("[data-split]", scope.current).forEach(splitReveal);
-        gsap.utils.toArray<HTMLElement>("[data-scrub]", scope.current).forEach(scrubWords);
+        return () => {
+          cancelled = true;
+          cancelIdle();
+        };
       });
     },
     { scope },
   );
 
   return scope;
+}
+
+function buildReveals(root: HTMLElement) {
+  gsap.utils.toArray<HTMLElement>("[data-scroll-transform]", root).forEach((item) => {
+    const y = Number(item.dataset.scrollY);
+    const scale = Number(item.dataset.scrollScale);
+    const yAmount = Number.isFinite(y) ? y : 0;
+    const startingScale = Number.isFinite(scale) ? scale : 1;
+
+    if (yAmount === 0 && startingScale === 1) return;
+
+    gsap.fromTo(
+      item,
+      { y: yAmount, scale: startingScale },
+      {
+        y: -yAmount,
+        scale: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: item,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+      },
+    );
+  });
+
+  gsap.utils.toArray<HTMLElement>("[data-reveal]", root).forEach((item) => {
+    gsap.from(item, {
+      opacity: 0,
+      y: 28,
+      duration: 0.9,
+      ease: EASE_OUT,
+      delay: Number(item.dataset.reveal) || 0,
+      scrollTrigger: { trigger: item, start: REVEAL_START, once: true },
+    });
+  });
+  gsap.utils.toArray<HTMLElement>("[data-split]", root).forEach(splitReveal);
+  gsap.utils.toArray<HTMLElement>("[data-scrub]", root).forEach(scrubWords);
 }
