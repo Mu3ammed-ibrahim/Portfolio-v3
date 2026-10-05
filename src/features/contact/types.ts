@@ -1,4 +1,4 @@
-import type { Inquiry, InquiryField } from "@/features/contact/lib/inquiry-schema";
+import type { InquiryDraft, InquiryField } from "@/features/contact/lib/inquiry-schema";
 
 export type InquiryState =
   | { status: "idle"; attempt: number }
@@ -6,7 +6,7 @@ export type InquiryState =
       status: "error";
       reason: "validation" | "delivery";
       invalid: InquiryField[];
-      values: Inquiry;
+      values: InquiryDraft;
       attempt: number;
     }
   | { status: "sent"; name: string; attempt: number };

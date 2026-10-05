@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendInquiry } from "@/features/contact/actions/send-inquiry";
 import { ContactField, fieldInputClass } from "@/features/contact/components/ContactField";
+import { ProjectTypeField } from "@/features/contact/components/ProjectTypeField";
 import type { InquiryField } from "@/features/contact/lib/inquiry-schema";
 import { initialInquiryState } from "@/features/contact/types";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -81,6 +82,12 @@ function InquiryForm({ t, arrow, onReset }: InquiryFormProps) {
             className={cn(fieldInputClass, "rtl:text-end rtl:placeholder:text-end")}
           />
         </ContactField>
+        <ProjectTypeField
+          legend={t.fields.projectType}
+          labels={t.projectTypes}
+          error={errorFor("projectType")}
+          selected={values?.projectType}
+        />
         <ContactField id="message" label={t.fields.message} error={errorFor("message")}>
           <Textarea
             id="message"

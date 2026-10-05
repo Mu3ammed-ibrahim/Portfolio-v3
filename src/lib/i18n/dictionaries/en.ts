@@ -136,9 +136,24 @@ export const en = {
   contact: {
     rail: "Let's connect",
     heading: ["Have a project", "in mind?"],
-    intro:
-      "I'm currently open to new projects and collaborations. Tell me what you're building and I'll reply within 24 hours.",
-    fields: { name: "Your name", email: "Email address", message: "About the project" },
+    // No longer says "tell me what you're building": the message field is optional now.
+    intro: "I'm currently open to new projects and collaborations. I reply within 24 hours.",
+    fields: {
+      name: "Your name",
+      email: "Email address",
+      projectType: "What do you need?",
+      message: "Anything else? (optional)",
+    },
+    // Keyed by slug, not ordered: the chip order lives in contact/lib/project-types.ts, because
+    // a positional array here would widen to string[] and never be length-checked against ar.ts.
+    projectTypes: {
+      website: "Website",
+      "web-app": "Web app",
+      "ui-ux": "UI / UX design",
+      dashboard: "Dashboard",
+      "business-system": "CMS / CRM",
+      other: "Something else",
+    },
     submit: "Send inquiry",
     sending: "Sending…",
     sent: ["Message", "received."],
@@ -148,7 +163,10 @@ export const en = {
     errors: {
       name: "Please enter your name.",
       email: "Enter a valid email address.",
-      message: "A few words about the project (10+ characters).",
+      projectType: "Please choose what you need.",
+      // A guard, not a UX path: the only way to see this is pasting over 2000 characters.
+      // t.errors is indexed by keyof Inquiry, so every schema field needs a key here.
+      message: "Please keep this under 2000 characters.",
       generic: "The message could not be sent. Please try again.",
     },
     location: "Jeddah, Saudi Arabia",

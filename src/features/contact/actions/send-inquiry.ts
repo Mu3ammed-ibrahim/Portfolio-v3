@@ -1,11 +1,17 @@
 "use server";
 
-import { inquirySchema, type Inquiry, type InquiryField } from "@/features/contact/lib/inquiry-schema";
+import {
+  inquirySchema,
+  type Inquiry,
+  type InquiryDraft,
+  type InquiryField,
+} from "@/features/contact/lib/inquiry-schema";
+import { projectTypeEmailLabels } from "@/features/contact/lib/project-types";
 import type { InquiryState } from "@/features/contact/types";
 import { site } from "@/lib/site";
 
-// Must match the hidden input in ContactForm. Kept out of inquirySchema so Inquiry
-// stays the three real fields; this is a transport concern, not part of the message.
+// Must match the hidden input in ContactForm. Kept out of inquirySchema so Inquiry stays
+// the real fields only; this is a transport concern, not part of the message.
 // The name is deliberately non-semantic: Chrome classifies names like "company" as
 // COMPANY_NAME and autofills them even when hidden and marked autocomplete="off",
 // which would silently drop a real visitor's message. Do not rename to a real field.
@@ -16,13 +22,16 @@ const field = (formData: FormData, key: InquiryField | typeof HONEYPOT) =>
 
 export async function sendInquiry(previous: InquiryState, formData: FormData): Promise<InquiryState> {
   const attempt = previous.attempt + 1;
-  const values: Inquiry = {
+  const values: InquiryDraft = {
     name: field(formData, "name"),
     email: field(formData, "email"),
+    projectType: field(formData, "projectType"),
     message: field(formData, "message"),
   };
 
   // A filled honeypot means a bot. Report success so it gets no signal, and send nothing.
+  // This must stay above safeParse: a bot that posts only the honeypot has no projectType,
+  // so parsing first would answer with a validation error — a signal that it was rejected.
   if (field(formData, HONEYPOT)) {
     return { status: "sent", name: values.name, attempt };
   }
@@ -47,6 +56,8 @@ async function deliverInquiry(inquiry: Inquiry) {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY is not set");
 
+  const label = projectTypeEmailLabels[inquiry.projectType];
+
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -60,8 +71,10 @@ async function deliverInquiry(inquiry: Inquiry) {
       from: `${site.name} <onboarding@resend.dev>`,
       to: site.email,
       reply_to: inquiry.email,
-      subject: `Portfolio inquiry from ${inquiry.name}`,
-      text: `${inquiry.name} <${inquiry.email}>\n\n${inquiry.message}`,
+      // The label is read from the validated enum, never the raw field, so nothing a visitor
+      // types can reach the subject line. There it also makes the inbox sortable.
+      subject: `Portfolio inquiry — ${label} from ${inquiry.name}`,
+      text: `${inquiry.name} <${inquiry.email}>\nProject type: ${label}\n\n${inquiry.message || "(no message)"}`,
     }),
   });
 
